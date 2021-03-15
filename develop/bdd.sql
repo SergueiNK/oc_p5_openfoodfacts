@@ -4,7 +4,7 @@ CREATE DATABASE purbeurre
 
 USE purbeurre;
 
-CREATE TABLE [IF NOT EXISTS] Food(
+CREATE TABLE [IF NOT EXISTS] Products(
         id INT UNSIGNED AUTO_INCREMENT,
         generic_name_fr VARCHAR(250),
         product_name_fr_imported VARCHAR(250),
@@ -15,14 +15,14 @@ CREATE TABLE [IF NOT EXISTS] Food(
         PRIMARY KEY (id)
 )ENGINE=INNODB;
 
-CREATE TABLE [IF NOT EXISTS] Category(
+CREATE TABLE [IF NOT EXISTS] Categories(
         id INT UNSIGNED AUTO_INCREMENT,
         categories VARCHAR(250),
         code INT UNSIGNED,
         PRIMARY KEY (id)
 )ENGINE=INNODB;
 
-CREATE TABLE [IF NOT EXISTS] Place_to_buy(
+CREATE TABLE [IF NOT EXISTS] Places_to_buy(
         id INT UNSIGNED AUTO_INCREMENT,
         stores VARCHAR (250),
         code INT UNSIGNED,
@@ -40,5 +40,5 @@ CREATE TABLE [IF NOT EXISTS] Favorites(
         PRIMARY KEY (id)
 )ENGINE=INNODB;
 
-ALTER TABLE Category ADD CONSTRAINT fk_code FOREIGN KEY (code) REFERENCES Category(code) # à vérifier
+ALTER TABLE Category ADD CONSTRAINT fk_code FOREIGN KEY (id) REFERENCES Products(id)
 

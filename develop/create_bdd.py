@@ -4,6 +4,7 @@
 import requests
 import mysql.connector
 from mysql.connector import errorcode
+from constants import create_tables_cmd
 import json
 
 # import bdd.sql
@@ -29,33 +30,49 @@ import json
 #     except Exception as e:
 #         print(e)
 
+def create_database():
+    try:
+        print('creating database')
+        infos_db = {
+            'user': 'root',
+            'password': 'Server1438!*',
+            'host': '127.0.0.1'
+        }
+        connector = mysql.connector.connect(**infos_db)
+        cursor = connector.cursor()
+        cursor.execute("SET NAMES utf8;")
+        cursor.execute("CREATE DATABASE purbeurre")
+        cursor.execute("USE purbeurre;")
+        for cmd in create_tables_cmd:
+            # creation des tables
+            cursor.execute(cmd)
+    except Exception as e:
+        raise e
+
 
 try:
     infos_db = {
-              'user': 'serguei',
-              'password': 'Made1609!*',
+              'user': 'root',
+              'password': 'Server1438!*',
               'host': '127.0.0.1',
-              'database': 'Purbeurre'
+              'database': 'purbeurre'
               }
     connexion = mysql.connector.connect(**infos_db)
     connexion.close()
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
         print("Something is wrong with your user name or password")
-    elif err.errno == errorcode.ER_BAD_DB_ERROR:
-        print("Database does not exist")
+    elif err.errno == 1049:
+        create_database()
     else:
         print(err)
-else:
-    connexion.close()
-
 
 
 
 
 
 # def create_tables():
-#     mysql.cursor.execute("""SET NAMES utf8mb4;""")
+#     mysql.cursor.execute("""SET NAMES utf8;""")
 #     mysql.cursor.execute("""CREATE TABLE [IF NOT EXISTS] Food(
 #         id INT UNSIGNED AUTO_INCREMENT,
 #         generic_name_fr VARCHAR(250),
