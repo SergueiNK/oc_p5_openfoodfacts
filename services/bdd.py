@@ -22,33 +22,54 @@ def init_database():
 
 
 def create_database():
+    connector = mysql.connector.connect(**infos_db)
+    cursor = connector.cursor()
+    cursor.execute("SET NAMES utf8;")
+    cursor.execute("CREATE DATABASE purbeurre;")
+    cursor.execute("USE purbeurre;")
     try:
-        connector = mysql.connector.connect(**infos_db)
-        cursor = connector.cursor()
-        cursor.execute("SET NAMES utf8;")
-        cursor.execute("CREATE DATABASE purbeurre;")
-        cursor.execute("USE purbeurre;")
         for cmd in create_tables_cmd:
-            # creation des tables
+            # create the tables
             cursor.execute(cmd)
-        insert_in_table_products(connector)
+        insert_in_tables(connector)
+        connector.close()
     except Exception as e:
+        # In case of pb drop the database
+        cursor.execute("DROP DATABASE purbeurre;")
+        connector.close()
         raise e
 
 
-def insert_in_table_products(connector):
+def insert_in_tables(connector):
     try:
+        # TODO: Le code produit sera t-il une clé en bdd ? Si oui à gérer en cas de vide ou None
+        cursor = connector.cursor()
+        sql_products = """INSERT INTO Products(generic_name_fr,product_name_fr_imported, 
+        ingredients_text_with_allergens_fr,code, url, nutrition_grade_fr) VALUES (%s, %s, %s, %s, %s, %s); """
+        sql_categories = """INSERT INTO Categories(categories, code) VALUES (%s, %s);"""
+        sql_stores = """INSERT INTO Places_to_buy(stores, code) VALUES (%s, %s);"""
         for product in api_get_products():
-            sql = """INSERT INTO Products(generic_name_fr,product_name_fr_imported,
-            ingredients_text_with_allergens_fr,code, url, nutrition_grade_fr) VALUES (%s, %s, %s, %s, %s, %s);"""
-            cursor = connector.cursor()
-            cursor.execute(sql, (
+            # insert data to product
+            cursor.execute(sql_products, (
                 product.get('generic_name_fr') if product.get('generic_name_fr') is not None else '',
                 product.get('product_name_fr_imported') if product.get('product_name_fr_imported') is not None else '',
-                product.get('ingredients_text_with_allergens_fr') if product.get('ingredients_text_with_allergens_fr') is not None else '',
+                product.get('ingredients_text_with_allergens_fr') if product.get(
+                    'ingredients_text_with_allergens_fr') is not None else '',
                 product.get('code') if product.get('code') is not None else '',
                 product.get('url') if product.get('url') is not None else '',
                 product.get('nutrition_grade_fr') if product.get('nutrition_grade_fr') is not None else ''))
+            connector.commit()
+            # Insert data to categories
+            cursor.execute(sql_categories, (
+                product.get('categories') if product.get('categories') is not None else '',
+                product.get('code') if product.get('code') is not None else '',
+            ))
+            connector.commit()
+            # Insert data to stores
+            cursor.execute(sql_stores, (
+                product.get('stores') if product.get('stores') is not None else '',
+                product.get('code') if product.get('code') is not None else '',
+            ))
             connector.commit()
     except Exception as e:
         raise e
