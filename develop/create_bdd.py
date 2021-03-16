@@ -12,23 +12,24 @@ import json
 # récuperation de l'API
 
 
-# def api_request():
-#     try:
-#         url_request = 'https://fr.openfoodfacts.org/cgi/search.pl'
-#         params = {
-#             "action": "process",
-#             "sort_by": "unique_scans_n",
-#             "page_size": 50,
-#             "json": 1,
-#             "page": 1,
-#             "fields": "generic_name_fr,product_name_fr_imported,ingredients_text_with_allergens_fr,"
-#                       "code, url, nutrition_grade_fr"
-#         }
-#         response = json.loads(requests.get(url_request, params).text)
-#         print(response.get('products'))
-#         print(len(response.get('products')))
-#     except Exception as e:
-#         print(e)
+def api_request():
+    try:
+        url_request = 'https://fr.openfoodfacts.org/cgi/search.pl'
+        params = {
+            "action": "process",
+            "sort_by": "unique_scans_n",
+            "page_size": 50,
+            "json": 1,
+            "page": 1,
+            "fields": "generic_name_fr,product_name_fr_imported,ingredients_text_with_allergens_fr,"
+                      "code, url, nutrition_grade_fr"
+        }
+        response = json.loads(requests.get(url_request, params).text)
+        print(response.get('products'))
+        return response.get('products')
+    except Exception as e:
+        raise e
+
 
 def create_database():
     try:
@@ -41,11 +42,23 @@ def create_database():
         connector = mysql.connector.connect(**infos_db)
         cursor = connector.cursor()
         cursor.execute("SET NAMES utf8;")
-        cursor.execute("CREATE DATABASE purbeurre")
+        cursor.execute("CREATE DATABASE purbeurre;")
         cursor.execute("USE purbeurre;")
         for cmd in create_tables_cmd:
             # creation des tables
             cursor.execute(cmd)
+        foodfacts_products_api = api_request()
+        for product in foodfacts_products_api:
+            sql = """INSERT INTO Products(generic_name_fr,product_name_fr_imported,
+            ingredients_text_with_allergens_fr,code, url, nutrition_grade_fr) VALUES (%s, %s, %s, %s, %s, %s);"""
+            cursor.execute(sql, (
+                product.get('generic_name_fr') if product.get('generic_name_fr') is not None else '',
+                product.get('product_name_fr_imported') if product.get('product_name_fr_imported') is not None else '',
+                product.get('ingredients_text_with_allergens_fr') if product.get('ingredients_text_with_allergens_fr') is not None else '',
+                product.get('code') if product.get('code') is not None else '',
+                product.get('url') if product.get('url') is not None else '',
+                product.get('nutrition_grade_fr') if product.get('nutrition_grade_fr') is not None else ''))
+            connector.commit()
     except Exception as e:
         raise e
 
