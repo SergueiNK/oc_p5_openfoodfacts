@@ -1,5 +1,5 @@
 #!/usr/bin/python3.9
-# -*-coding:utf-8 -
+# -*- coding:utf-8 -*-
 
 import mysql.connector
 from mysql.connector import errorcode
@@ -45,7 +45,7 @@ def insert_in_tables(connector):
         # TODO: Le code produit sera t-il une clé en bdd ? Si oui à gérer en cas de vide ou None
         cursor = connector.cursor()
         sql_products = """INSERT INTO Products(generic_name_fr,product_name_fr_imported, 
-        ingredients_text_with_allergens_fr,code, url, nutrition_grade_fr) VALUES (%s, %s, %s, %s, %s, %s); """
+        ingredients_text_with_allergens_fr,code, url, nutrition_grade_fr, name) VALUES (%s, %s, %s, %s, %s, %s, %s); """
         sql_categories = """INSERT INTO Categories(categories, code) VALUES (%s, %s);"""
         sql_stores = """INSERT INTO Places_to_buy(stores, code) VALUES (%s, %s);"""
         for product in api_get_products():
@@ -57,7 +57,8 @@ def insert_in_tables(connector):
                     'ingredients_text_with_allergens_fr') is not None else '',
                 product.get('code') if product.get('code') is not None else '',
                 product.get('url') if product.get('url') is not None else '',
-                product.get('nutrition_grade_fr') if product.get('nutrition_grade_fr') is not None else ''))
+                product.get('nutrition_grade_fr') if product.get('nutrition_grade_fr') is not None else '',
+                product.get('name') if product.get('name') is not None else ''))
             connector.commit()
             # Insert data to categories
             cursor.execute(sql_categories, (

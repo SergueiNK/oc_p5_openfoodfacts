@@ -1,5 +1,5 @@
 #!/usr/bin/python3.9
-# -*-coding:utf-8 -
+# -*- coding:utf-8 -*-
 
 import requests
 from develop.constants import products_params, url_request
