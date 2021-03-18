@@ -7,6 +7,10 @@ Installation de my sql connector
 
 pip install mysql-connector-python
 
+Save all packages with freeze
+
+pip freeze > requirements.txt
+
 Soutenance
 
 Thierry Chappuis — 05/20/2020
@@ -162,3 +166,19 @@ Pour les foreign key, elles ne doivent pointer que sur la primary key de la tabl
 L'usage d'une foreign key a également l'effet que tu ne pourras enregistrer que une seule catégorie par produit. Par ailleurs, les stores devraient également être enregistrés dans une table séparées et liés aux produits par une table d'association.
 [11:52 AM]
 Je ne vois pas le besoin d'avoir une table Product et une table SubstitutedProduct avec de l'information dupliquée. Utilise une seule table product avec une relation plusieurs à plusieurs sur elle-même.
+
+query = "INSERT INTO categories(category_name) VALUES (%(name)s)"
+cursor.execute(query, dico)
+
+Leto — 01/21/2021
+je n'ai pas de dico
+[3:03 PM]
+name est un paramètre qui sera passé dans une boucle
+[3:03 PM]
+serait-ce un problème ?
+
+Thierry Chappuis — 01/21/2021
+dans ce cas:
+query = "INSERT INTO categories(category_name) VALUES (%(name)s)"
+cursor.execute(query, {"name": variable_avec_nom})
+connection.commit()

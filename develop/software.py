@@ -1,12 +1,39 @@
 #!/usr/bin/python3.9
 # -*- coding:utf-8 -*-
 
+from colorama import Fore
+from services.bdd import get_bdd_connector
+import time
+
 class Display:
 # Lancer le programme purbeurre
+    bdd_connection = None
 
-#def home_page():
-# Afficher la phrase 1 : Purbeurre vous permet de choisir le substitut de vos aliments
-# Afficher les 3 propositions suivantes:
+    def __init__(self):
+        self.bdd_connection = get_bdd_connector()
+        self.home_page()
+
+
+    def home_page(self):
+            #Afficher la phrase 1 : Purbeurre est votre meilleur compagnon sur le schéma de la meilleur nutrition
+        print(Fore.BLUE + "\n++++Page d'acceuil++++\n")
+        print(Fore.GREEN + "\nPurbeurre est votre meilleur compagnon sur le schéma de la meilleur nutrition! \n")
+
+        print(Fore.YELLOW + "1. Quel aliment souhaitez-vous remplacer? \n2. Retrouver mes aliments substituts. \n0.Quitter le programme")
+
+        selection = input("Faites votre selection")
+        print("votre choix >>> {}".format(selection))
+        if selection == '1':
+            return self.categories_page()
+        elif selection == '2':
+            return self.substitute_page()
+        elif selection == '0':
+            return self.quit_software()
+        else:
+            print (Fore.RED + "Mauvaise selection")
+            return self.home_page()
+
+# Afficher les 3 propositions suivantes:s
     # 1. Quel aliment souhaitez-vous remplacer?
     # 2. Retrouver mes aliments substituts
     # 0.Quitter le programme
@@ -15,10 +42,19 @@ class Display:
 #Si l'utilisateur choisi 2. alors lui renvoyer la table des substituts
 # Su l'utilisateur choisi 0. alors fermer le programme
 
-# def categories_page():
+    def categories_page(self):
 
 # Afficher la phrase 2: Sélectionez la categorie de l'aliment
+        print(Fore.BLUE + "\n ++++Page Categories++++ \n")
 # Afficher la liste de la class Categories de la méthode def select_categories():
+        cursor = self.bdd_connection.cursor()
+        cursor.execute("""SELECT DISTINCT categories FROM categories ORDER BY RAND() LIMIT 4""")
+        dict_categories = cursor.fetchall()
+        print(dict_categories)
+        for category in dict_categories:
+            # category is a tuuple
+            print(category)
+
 # Rajouter  à la liste les propositions 9. et 0.
     # Afficher les 10 propositions suivantes:
     # 1. Categorie 1 (nom)
@@ -46,7 +82,8 @@ class Display:
 # Si l'utilisateur choisi 9 alors revenir sur la page d'acceuil
 # Si l'utilisateur choisi 0 alors fermer le programme
 
-# def substitute_page():
+    def substitute_page(self):
+        print("substitute_page")
 
 # Afficher la phrase 4: Voici votre produit de substitution que voulez vous en faire?
 # Afficher le substitut avec les informations completes d'un product( name, store, .....)
@@ -61,8 +98,12 @@ class Display:
 # Si l'utilisateur choisi 9. alors retourner vers la page des produits
 # Si l'utilisateur choisi 0. alors fermer le programme
 
+    def quit_software(self):
+        exit()
+# Quitter le programme
 
 class Categories:
+    pass
 
 # def select_categories():
 
@@ -71,6 +112,7 @@ class Categories:
 # Nettoyer la liste aprés l'iteraction de l'utilisateur
 
 class Product:
+    pass
 
 # def select_product():
 # Selection random de 4 produits differents dans la Table de Produits selon la categorie
@@ -78,6 +120,7 @@ class Product:
 # Nettoyer la liste aprés l'iteraction de l'utilisateur
 
 class Substitute:
+    pass
 
 # def select_substitute ():
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python3.9
 # -*- coding:utf-8 -*-
 
-import mysql.connector
+import mysql.connector as mysql
 from mysql.connector import errorcode
 from develop.constants import infos_db_purbeurre, infos_db, create_tables_cmd
 from services.api import api_get_products
@@ -9,9 +9,9 @@ from services.api import api_get_products
 
 def init_database():
     try:
-        connexion = mysql.connector.connect(**infos_db_purbeurre)
+        connexion = mysql.connect(**infos_db_purbeurre)
         connexion.close()
-    except mysql.connector.Error as err:
+    except mysql.Error as err:
         # TODO: Gérer les erreurs plus proprement
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -22,7 +22,7 @@ def init_database():
 
 
 def create_database():
-    connector = mysql.connector.connect(**infos_db)
+    connector = mysql.connect(**infos_db)
     cursor = connector.cursor()
     cursor.execute("SET NAMES utf8;")
     cursor.execute("CREATE DATABASE purbeurre;")
@@ -74,3 +74,10 @@ def insert_in_tables(connector):
             connector.commit()
     except Exception as e:
         raise e
+
+
+def get_bdd_connector():
+    # Return new cursor from bdd (to avoid connection lost)
+    # TODO: Connexion perdu = program crash
+    connector = mysql.connect(**infos_db_purbeurre)
+    return connector
