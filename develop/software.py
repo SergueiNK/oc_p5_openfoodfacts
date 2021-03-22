@@ -19,7 +19,7 @@ class Display:
         print(Fore.BLUE + "\n++++Page d'acceuil++++\n")
         print(Fore.GREEN + "\nPurbeurre est votre meilleur compagnon sur le schéma de la meilleur nutrition! \n")
 
-        print(Fore.YELLOW + "1. Quel aliment souhaitez-vous remplacer? \n2. Retrouver mes aliments substituts. \n0.Quitter le programme")
+        print(Fore.YELLOW + "1: Quel aliment souhaitez-vous remplacer? \n2: Retrouver mes aliments substituts. \n \nq: Quitter le programme")
 
         selection = input("Faites votre selection")
         print("votre choix >>> {}".format(selection))
@@ -27,7 +27,7 @@ class Display:
             return self.categories_page()
         elif selection == '2':
             return self.substitute_page()
-        elif selection == '0':
+        elif selection == 'q':
             return self.quit_software()
         else:
             print (Fore.RED + "Mauvaise selection")
@@ -50,10 +50,31 @@ class Display:
         cursor = self.bdd_connection.cursor()
         cursor.execute("""SELECT DISTINCT categories FROM categories ORDER BY RAND() LIMIT 4""")
         dict_categories = cursor.fetchall()
-        print(dict_categories)
-        for category in dict_categories:
+
+        for index, category in enumerate(dict_categories):
             # category is a tuuple
-            print(category)
+            string_category = [''.join(item) for item in category][0]
+            print(Fore.YELLOW + '{}: {}'.format(index, string_category))
+        print(Fore.YELLOW + "\nq: Quitter le programme \nr: Retour vers la page d'acceuil")
+
+        selection = input("Faites votre selection")
+        print("votre choix >>> {}".format(selection))
+        if selection == '0':
+            return self.product_page()
+        elif selection == '1':
+            return self.product_page()
+        elif selection == '2':
+            return self.product_page()
+        elif selection == '3':
+            return self.product_page()
+        elif selection == 'q':
+            return self.quit_software()
+        elif selection == 'r':
+            return self.home_page()
+        else:
+            print (Fore.RED + "Mauvaise selection")
+            return self.home_page()
+
 
 # Rajouter  à la liste les propositions 9. et 0.
     # Afficher les 10 propositions suivantes:
@@ -67,7 +88,8 @@ class Display:
 # Si l'utilisateur choisi 9 alors revenir sur la page d'acceuil
 # Si l'utilisateur choisi 0 alors fermer le programme
 
-# def product_page():
+    def product_page(self):
+        print("product")
 
 # Afficher la phrase 3: Selectionez le produit
 # Afficher les 6 propositions suivantes:
