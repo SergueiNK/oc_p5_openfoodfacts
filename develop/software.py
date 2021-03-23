@@ -48,32 +48,31 @@ class Display:
         print(Fore.BLUE + "\n ++++Page Categories++++ \n")
 # Afficher la liste de la class Categories de la méthode def select_categories():
         cursor = self.bdd_connection.cursor()
-        cursor.execute("""SELECT DISTINCT categories FROM categories ORDER BY RAND() LIMIT 4""")
+        cursor.execute("""SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY RAND() LIMIT 4""")
         dict_categories = cursor.fetchall()
+        categories = []
+        print(dict_categories)
+        # categorie_selectione = []
 
         for index, category in enumerate(dict_categories):
-            # category is a tuuple
+            # category is a tuple
             string_category = [''.join(item) for item in category][0]
+            categories.append(string_category)
             print(Fore.YELLOW + '{}: {}'.format(index, string_category))
         print(Fore.YELLOW + "\nq: Quitter le programme \nr: Retour vers la page d'acceuil")
 
         selection = input("Faites votre selection")
         print("votre choix >>> {}".format(selection))
-        if selection == '0':
-            return self.product_page()
-        elif selection == '1':
-            return self.product_page()
-        elif selection == '2':
-            return self.product_page()
-        elif selection == '3':
-            return self.product_page()
+        if selection in ['0','1','2','3']:
+            categorie_selectione = categories[int(selection)]
+            return self.product_page(categorie_selectione)
         elif selection == 'q':
             return self.quit_software()
         elif selection == 'r':
             return self.home_page()
         else:
             print (Fore.RED + "Mauvaise selection")
-            return self.home_page()
+            return self.categories_page()
 
 
 # Rajouter  à la liste les propositions 9. et 0.
@@ -88,8 +87,37 @@ class Display:
 # Si l'utilisateur choisi 9 alors revenir sur la page d'acceuil
 # Si l'utilisateur choisi 0 alors fermer le programme
 
-    def product_page(self):
-        print("product")
+    def product_page(self, categorie_selectione):
+        print(Fore.BLUE + "\n ++++Page Produits++++ \n")
+        cursor = self.bdd_connection.cursor()
+        cursor.execute(f"""SELECT generic_name_fr FROM Products 
+        INNER JOIN Categories ON Products.code = Categories.code 
+        WHERE Categories.pnns_groups_1 = '{categorie_selectione}' ORDER BY RAND() LIMIT 4""")
+        dict_product = cursor.fetchall()
+        print(dict_product)
+        string_product = []
+        print(categorie_selectione)
+        for index, product in enumerate(dict_product):
+            # category is a tuple
+            string_product = [''.join(item) for item in product][0]
+            print(string_product)
+            print(Fore.YELLOW + '{}: {}'.format(index, string_product))
+        print(Fore.YELLOW + "\nq: Quitter le programme \nr: Retour vers la page de categories")
+
+        selection = input("Faites votre selection")
+        print("votre choix >>> {}".format(selection))
+
+        if selection in ['0','1','2','3']:
+              # categorie_selectione = string_product[int(selection)]
+              return self.substitute_page()
+        elif selection == 'q':
+            return self.quit_software()
+        elif selection == 'r':
+            return self.categories_page()
+        else:
+            print (Fore.RED + "Mauvaise selection")
+            return self.product_page(None)
+
 
 # Afficher la phrase 3: Selectionez le produit
 # Afficher les 6 propositions suivantes:
@@ -105,7 +133,7 @@ class Display:
 # Si l'utilisateur choisi 0 alors fermer le programme
 
     def substitute_page(self):
-        print("substitute_page")
+        print(Fore.BLUE + "\n ++++Page Substituts++++ \n")
 
 # Afficher la phrase 4: Voici votre produit de substitution que voulez vous en faire?
 # Afficher le substitut avec les informations completes d'un product( name, store, .....)

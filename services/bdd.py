@@ -46,7 +46,7 @@ def insert_in_tables(connector):
         cursor = connector.cursor()
         sql_products = """INSERT INTO Products(generic_name_fr,product_name_fr_imported, 
         ingredients_text_with_allergens_fr,code, url, nutrition_grade_fr, name) VALUES (%s, %s, %s, %s, %s, %s, %s); """
-        sql_categories = """INSERT INTO Categories(categories, code) VALUES (%s, %s);"""
+        sql_categories = """INSERT INTO Categories(pnns_groups_1, code) VALUES (%s, %s);"""
         sql_stores = """INSERT INTO Places_to_buy(stores, code) VALUES (%s, %s);"""
         for product in api_get_products():
             # insert data to product
@@ -62,7 +62,7 @@ def insert_in_tables(connector):
             connector.commit()
             # Insert data to categories
             cursor.execute(sql_categories, (
-                product.get('categories') if product.get('categories') is not None else '',
+                product.get('pnns_groups_1') if product.get('pnns_groups_1') is not None else '',
                 product.get('code') if product.get('code') is not None else '',
             ))
             connector.commit()
