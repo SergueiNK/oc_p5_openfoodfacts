@@ -14,7 +14,7 @@ create_tables_cmd = [
     "CREATE TABLE  Favorites(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(250), product_name_fr_imported "
     "VARCHAR(250), ingredients_text_with_allergens_fr TEXT, code VARCHAR(50), url VARCHAR(250), nutrition_grade_fr "
     "VARCHAR(5), PRIMARY KEY (id))ENGINE=INNODB;",
-    "ALTER TABLE Categories ADD CONSTRAINT fk_categories FOREIGN KEY (code) REFERENCES Products(code)"
+    "ALTER TABLE Categories ADD CONSTRAINT fk_categories FOREIGN KEY (id) REFERENCES Products(id)"
 ]
 
 # Constants for API requests

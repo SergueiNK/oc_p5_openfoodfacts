@@ -2,8 +2,6 @@
 # -*- coding:utf-8 -*-
 
 from colorama import Fore
-from services.bdd import get_bdd_connector
-import time
 
 
 def quit_software():
@@ -12,11 +10,10 @@ def quit_software():
 
 class Display:
     # Lancer le programme purbeurre
-    bdd_connection = None
     favorites = []
 
-    def __init__(self):
-        self.bdd_connection = get_bdd_connector()
+    def __init__(self, bdd):
+        self.bdd = bdd
         self.home_page()
 
     def home_page(self):
@@ -41,98 +38,69 @@ class Display:
         # Afficher la phrase 2: Sélectionez la categorie de l'aliment
         print(Fore.BLUE + "\n ++++Page Categories++++ \n")
         # Afficher la liste de la class Categories de la méthode def select_categories():
-        cursor = self.bdd_connection.cursor()
-        cursor.execute("""SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY RAND() LIMIT 4""")
-        dict_categories = cursor.fetchall()
-        print(dict_categories)
-        categories = []
+        sql_statement = """SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY RAND() LIMIT 4"""
+        dict_categories = self.bdd.get_query_results(sql_statement, ['pnns_groups_1'])
         for index, category in enumerate(dict_categories):
-            # category is a tuple
-            string_category = [''.join(item) for item in category][0]
-            categories.append(string_category)
-            print(Fore.YELLOW + '{}: {}'.format(index, string_category))
+            print(Fore.YELLOW + '{}: {}'.format(index, category['pnns_groups_1']))
         print(Fore.YELLOW + "\nq: Quitter le programme \nr: Retour vers la page d'acceuil")
         selection = input("Faites votre selection")
         if selection in ['0', '1', '2', '3']:
-            categorie_selectione = categories[int(selection)]
-            return self.product_page(categorie_selectione)
+            return self.product_page(dict_categories[int(selection)])
         elif selection == 'q':
             return quit_software()
         elif selection == 'r':
             return self.home_page()
         else:
-            print (Fore.RED + "Mauvaise selection")
+            print(Fore.RED + "Mauvaise selection")
             return self.categories_page()
 
     def product_page(self, categorie_selectione):
         print(Fore.BLUE + "\n ++++Page Produits++++ \n")
-        cursor = self.bdd_connection.cursor()
-        cursor.execute(f"""SELECT generic_name_fr, nutrition_grade_fr FROM Products 
+        sql_statement = f"""SELECT DISTINCT generic_name_fr, nutrition_grade_fr FROM Products 
         INNER JOIN Categories ON Products.code = Categories.code 
-        WHERE Categories.pnns_groups_1 = '{categorie_selectione}' ORDER BY RAND() LIMIT 4""")
-        dict_product = cursor.fetchall()
-        print(dict_product)
-        # nutrition_grade_fr_product = cursor.fetchall()
-        # print(nutrition_grade_fr_product)
-        string_product = []
-        for index, product in enumerate(dict_product):
-            # category is a tuple
-            string_product = [''.join(item) for item in product][0]
-            print(string_product)
-            print(Fore.YELLOW + '{}: {}'.format(index, string_product))
+        WHERE Categories.pnns_groups_1 = '{categorie_selectione['pnns_groups_1']}' ORDER BY RAND() LIMIT 4"""
+        dict_products = self.bdd.get_query_results(sql_statement, ['generic_name_fr', 'nutrition_grade_fr'])
+        for index, product in enumerate(dict_products):
+            print(Fore.YELLOW + '{}: {}'.format(index, product['generic_name_fr']))
         print(Fore.YELLOW + "\nq: Quitter le programme \nr: Retour vers la page de categories")
 
         selection = input("Faites votre selection")
         print("votre choix >>> {}".format(selection))
-
-        if selection in ['0','1','2','3']:
-            print(string_product)
-            product_selectione = string_product[int(selection)]
-            print(product_selectione)
-            return self.substitute_page(product_selectione, categorie_selectione)
+        if selection in ['0', '1', '2', '3']:
+            return self.substitute_page(dict_products[int(selection)], categorie_selectione)
         elif selection == 'q':
             return quit_software()
         elif selection == 'r':
             return self.categories_page()
         else:
             print (Fore.RED + "Mauvaise selection")
-            return self.product_page(None)
+            return self.product_page(categorie_selectione)
 
-    def substitute_page(self, product_selectione, categorie_selectione):
+    def substitute_page(self, dict_products, categorie_selectione):
         print(Fore.BLUE + "\n ++++Page Substituts++++ \n")
-        cursor = self.bdd_connection.cursor()
-        print(f"""SELECT generic_name_fr FROM Products
+        if dict_products['nutrition_grade_fr'] in ['c', 'd', 'e']:
+            substitute_score = ('a', 'b')
+            sql_statement = f"""SELECT generic_name_fr, nutrition_grade_fr, url FROM Products
                     INNER JOIN Categories ON Products.code = Categories.code
-                    WHERE Categories.pnns_groups_1 = '{categorie_selectione}'
-                        AND nutrition_grade_fr > '{product_nutrition_grade}' ORDER BY RAND() LIMIT 4""")
-        cursor.execute(f"""SELECT generic_name_fr FROM Products
-                    INNER JOIN Categories ON Products.code = Categories.code
-                    WHERE Categories.pnns_groups_1 = '{categorie_selectione}'
-                        AND nutrition_grade_fr > '{product_nutrition_grade}' ORDER BY RAND() LIMIT 4""")
-        dict_substitute = cursor.fetchall()
-        print(dict_substitute)
-        string_substitute = []
-        print(categorie_selectione)
-        print(product_selectione)
-        for index, product in enumerate(dict_substitute):
-            # category is a tuple
-            string_substitute = [''.join(item) for item in product][0]
-            print(string_substitute)
-            print(Fore.YELLOW + '{}: {}'.format(index, string_substitute))
-        print(Fore.YELLOW + "\nq: Quitter le programme \nr: Retour vers la page de categories")
+                    WHERE Categories.pnns_groups_1 = '{categorie_selectione['pnns_groups_1']}'
+                    AND nutrition_grade_fr in {substitute_score} ORDER BY RAND() LIMIT 1"""
+            dict_substitute = self.bdd.get_query_results(sql_statement,
+                                                         ['generic_name_fr', 'nutrition_grade_fr', 'url'])
+            for index, product in enumerate(dict_substitute):
+                print(Fore.YELLOW + '{}: {}'.format(index, product['generic_name_fr']))
+            print(Fore.YELLOW + "\nq: Quitter le programme \nr: Retour vers la page de categories")
 
-        selection = input("Faites votre selection")
-        print("votre choix >>> {}".format(selection))
-
-        if selection in ['0']:
-            substitute_selectione = string_substitute[int(selection)]
-            print(substitute_selectione)
-            # return self.substitute_page()
-        elif selection == 'q':
-            return quit_software()
-        elif selection == 'r':
-            return self.categories_page()
+            selection = input("Faites votre selection")
+            print("votre choix >>> {}".format(selection))
+            if selection in ['0']:
+                print('ok')
+            # TODO: save in favorites et return to home
+            elif selection == 'q':
+                return quit_software()
+            else:
+                print(Fore.RED + "Mauvaise selection")
+                return self.substitute_page(dict_products, categorie_selectione)
         else:
-            print(Fore.RED + "Mauvaise selection")
-            return self.product_page(None)
+            print("Vous avez déjà un trés bon produit")
+            return self.home_page()
 
