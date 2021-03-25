@@ -42,6 +42,7 @@ class Bdd:
     def insert_in_tables(self, connector):
         try:
             # TODO: Le code produit sera t-il une clé en bdd ? Si oui à gérer en cas de vide ou None
+            # TODO: Ne pas importer le produit en cas d'une case vide ou uknown
             cursor = connector.cursor()
             sql_products = """INSERT INTO Products(generic_name_fr,product_name_fr_imported, 
             ingredients_text_with_allergens_fr,code, url, nutrition_grade_fr, name) VALUES (%s, %s, %s, %s, %s, %s, %s); """

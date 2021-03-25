@@ -3,6 +3,7 @@
 
 # Sql TABLE creation
 # TODO: Add 'name' to product table
+# TODO: Delete the TABLE Place_to_buy
 create_tables_cmd = [
     "CREATE TABLE  Products(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(250), product_name_fr_imported "
     "VARCHAR(250), ingredients_text_with_allergens_fr TEXT, code VARCHAR(50), url VARCHAR(250), nutrition_grade_fr "
