@@ -61,7 +61,7 @@ class Display:
         WHERE Categories.pnns_groups_1 = '{categorie_selectione['pnns_groups_1']}' ORDER BY RAND() LIMIT 4"""
         dict_products = self.bdd.get_query_results(sql_statement, ['generic_name_fr', 'nutrition_grade_fr'])
         for index, product in enumerate(dict_products):
-            print(Fore.YELLOW + '{}: nom:{} nutriscore:{}'.format(index, product['generic_name_fr'],
+            print(Fore.YELLOW + '{}: nom-{} nutriscore-({})'.format(index, product['generic_name_fr'],
                                                                   product['nutrition_grade_fr'],))
         print(Fore.YELLOW + "\nq: Quitter le programme \nr: Retour vers la page de categories")
 
@@ -90,9 +90,9 @@ class Display:
                                                          ['generic_name_fr', 'nutrition_grade_fr', 'url'])
             print(dict_substitute)
             for index, product in enumerate(dict_substitute):
-                # if dict_substitute taille > 0
+                 # if dict_substitute taille > 0
             # TODO: add in print 'nutrition_grade_fr', 'url'
-                print(Fore.YELLOW + '{}: {} {} {}'.format(index, product['generic_name_fr'],
+                print(Fore.YELLOW + '{}: nom-{} nutriscore-({}) url-{}'.format(index, product['generic_name_fr'],
                                                     product['nutrition_grade_fr'], product['url']))
             print(Fore.YELLOW + "\nq: Quitter le programme \ns: Sauvegarder le substitute dasn mes favoris")
 
