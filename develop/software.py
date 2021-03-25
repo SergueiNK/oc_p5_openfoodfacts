@@ -89,31 +89,39 @@ class Display:
             dict_substitute = self.bdd.get_query_results(sql_statement,
                                                          ['generic_name_fr', 'nutrition_grade_fr', 'url'])
             print(dict_substitute)
-            for index, product in enumerate(dict_substitute):
-                 # if dict_substitute taille > 0
-            # TODO: add in print 'nutrition_grade_fr', 'url'
-                print(Fore.YELLOW + '{}: nom-{} nutriscore-({}) url-{}'.format(index, product['generic_name_fr'],
-                                                    product['nutrition_grade_fr'], product['url']))
-            print(Fore.YELLOW + "\nq: Quitter le programme \ns: Sauvegarder le substitute dasn mes favoris")
+            if len(dict_substitute) > 0:
+                for index, product in enumerate(dict_substitute):
+                # TODO: add in print 'nutrition_grade_fr', 'url'
+                    print(Fore.YELLOW + '{}: nom-{} nutriscore-({}) url-{}'.format(index, product['generic_name_fr'],
+                                                        product['nutrition_grade_fr'], product['url']))
+                print(Fore.YELLOW + "\nq: Quitter le programme \ns: Sauvegarder le substitute dasn mes favoris")
 
-            selection = input("Faites votre selection")
-            print("votre choix >>> {}".format(selection))
-            if selection in ['0']:
-                print('ok')
-            # TODO: save in favorites et return to home
-            elif selection == 's':
-            # TODO: print to see that the append of favorites is ok
-                return self.favorites.append(dict_substitute)
-            elif selection == 'q':
-                return quit_software()
+                selection = input("Faites votre selection")
+                print("votre choix >>> {}".format(selection))
+                if selection in ['0']:
+                    print('ok')
+                # TODO: save in favorites et return to home
+                elif selection == 's':
+                    # TODO: print to see that the append of favorites is ok
+                    return self.favorites.append(dict_substitute)
+                elif selection == 'q':
+                    return quit_software()
+                else:
+                    print(Fore.RED + "Mauvaise selection")
+                    return self.substitute_page(dict_products, categorie_selectione)
             else:
-                print(Fore.RED + "Mauvaise selection")
-                return self.substitute_page(dict_products, categorie_selectione)
-            # TODO: add case if none substitute product
-            # else:
-            #     dict_products = [0]
-            #     print("Nous n'avons pas de produits à vous proposer")
-            #     return self.substitute_page(dict_products, categorie_selectione)
+                # TODO: add case if none substitute product
+                print ("Nous n'avons pas de substituts à vous proposer")
+                print(
+                    Fore.YELLOW + "0: Retour au menu principal \nq: Quitter le programme")
+                selection = input("Faites votre selection")
+                if selection == '0':
+                    return self.home_page()
+                elif selection == 'q':
+                    return quit_software()
+                else:
+                    print(Fore.RED + "Mauvaise selection")
+                    return self.home_page()
         else:
             print("Vous avez déjà un trés bon produit")
             return self.home_page()
