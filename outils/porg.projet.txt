@@ -1,0 +1,41 @@
+Astuces prog.python Projet 5
+
+UTILISATION ENUM
+(Utilisation enum pour faire passer les strings en constantes et ensuite de les appliquer dans 
+d'autres fichiers-classes pour reduire la taille de code. Plus si les stringues se repetent et ils faut les apppliquer. 
+
+Exemple projet: 
+Dans les constants.py
+
+from enum import Enum
+
+Puis créer des classes style: 
+
+class Language (str, Enum):
+welcome_page_title = "\n++++Page d'acceuil++++\n"
+
+class SqlStatement (str, Enum):
+use_utf8 = "SET NAMES utf8;"
+
+Puis envoyer ca dans un autre fichier type software.py
+
+from develop.constants import Language
+
+Pour un print : 
+
+def home_page(self):
+
+print(Fore.BLUE + Language.welcome_page_title)
+print(Fore.GREEN + Language.description_purbeurre_title)
+
+Pour une constante ça pourrai être: 
+exemple dans bdd.py
+from develop.constants import SqlStatement
+
+ def insert_in_tables(self, connector):
+
+sql_products = SqlStatement.insert_values_products_table
+sql_categories = SqlStatement.insert_values_categories_table)
+
+CURSOR.EXECUTE(): permet de lancer l'execution de SQL dans Python 
+ 

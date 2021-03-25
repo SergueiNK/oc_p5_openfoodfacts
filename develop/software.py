@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from colorama import Fore
+from develop.constants import Language
 
 
 def quit_software():
@@ -18,10 +19,9 @@ class Display:
 
     def home_page(self):
         # Afficher la phrase 1 : Purbeurre est votre meilleur compagnon sur le schéma de la meilleur nutrition
-        print(Fore.BLUE + "\n++++Page d'acceuil++++\n")
-        print(Fore.GREEN + "\nPurbeurre est votre meilleur compagnon sur le schéma de la meilleur nutrition! \n")
-        print(Fore.YELLOW + "1: Quel aliment souhaitez-vous remplacer? \n2: Retrouver mes aliments substituts. \n "
-                            "\nq: Quitter le programme")
+        print(Fore.BLUE + Language.welcome_home_title)
+        print(Fore.GREEN + Language.description_purbeurre_title)
+        print(Fore.YELLOW + Language.user_choice_home_page)
         selection = input("Faites votre selection")
         if selection == '1':
             return self.categories_page()
@@ -36,13 +36,13 @@ class Display:
 
     def categories_page(self):
         # Afficher la phrase 2: Sélectionez la categorie de l'aliment
-        print(Fore.BLUE + "\n ++++Page Categories++++ \n")
+        print(Fore.BLUE + Language.welcome_categories_title)
         # Afficher la liste de la class Categories de la méthode def select_categories():
-        sql_statement = """SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY RAND() LIMIT 4"""
+        sql_statement = Language.sql_categories_selection
         dict_categories = self.bdd.get_query_results(sql_statement, ['pnns_groups_1'])
         for index, category in enumerate(dict_categories):
             print(Fore.YELLOW + '{}: {}'.format(index, category['pnns_groups_1']))
-        print(Fore.YELLOW + "\nq: Quitter le programme \nr: Retour vers la page d'acceuil")
+        print(Fore.YELLOW + Language.user_choice_categories_page)
         selection = input("Faites votre selection")
         if selection in ['0', '1', '2', '3']:
             return self.product_page(dict_categories[int(selection)])
@@ -55,7 +55,7 @@ class Display:
             return self.categories_page()
 
     def product_page(self, categorie_selectione):
-        print(Fore.BLUE + "\n ++++Page Produits++++ \n")
+        print(Fore.BLUE + Language.welcome_product_title)
         sql_statement = f"""SELECT DISTINCT generic_name_fr, nutrition_grade_fr FROM Products 
         INNER JOIN Categories ON Products.code = Categories.code 
         WHERE Categories.pnns_groups_1 = '{categorie_selectione['pnns_groups_1']}' ORDER BY RAND() LIMIT 4"""

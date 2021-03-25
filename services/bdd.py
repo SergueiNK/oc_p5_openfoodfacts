@@ -5,6 +5,7 @@ import mysql.connector as mysql
 from mysql.connector import errorcode
 from develop.constants import infos_db_purbeurre, infos_db, create_tables_cmd
 from services.api import api_get_products
+from develop.constants import SqlStatement
 
 
 class Bdd:
@@ -24,9 +25,9 @@ class Bdd:
     def create_database(self):
         connector = mysql.connect(**infos_db)
         cursor = connector.cursor()
-        cursor.execute("SET NAMES utf8;")
-        cursor.execute("CREATE DATABASE purbeurre;")
-        cursor.execute("USE purbeurre;")
+        cursor.execute(SqlStatement.use_utf8)
+        cursor.execute(SqlStatement.create_purbeurre)
+        cursor.execute(SqlStatement.use_purbeurre)
         try:
             for cmd in create_tables_cmd:
                 # create the tables
@@ -35,7 +36,7 @@ class Bdd:
             connector.close()
         except Exception as e:
             # In case of pb drop the database
-            cursor.execute("DROP DATABASE purbeurre;")
+            cursor.execute(SqlStatement.drop_purbeurre)
             connector.close()
             raise e
 
@@ -44,10 +45,9 @@ class Bdd:
             # TODO: Le code produit sera t-il une clé en bdd ? Si oui à gérer en cas de vide ou None
             # TODO: Ne pas importer le produit en cas d'une case vide ou uknown
             cursor = connector.cursor()
-            sql_products = """INSERT INTO Products(generic_name_fr,product_name_fr_imported, 
-            ingredients_text_with_allergens_fr,code, url, nutrition_grade_fr, name) VALUES (%s, %s, %s, %s, %s, %s, %s); """
-            sql_categories = """INSERT INTO Categories(pnns_groups_1, code) VALUES (%s, %s);"""
-            sql_stores = """INSERT INTO Places_to_buy(stores, code) VALUES (%s, %s);"""
+            sql_products = SqlStatement.insert_values_products_table
+            sql_categories = SqlStatement.insert_values_categories_table
+            sql_stores =SqlStatement.insert_values_stores_table
             for product in api_get_products():
                 # insert data to product
                 cursor.execute(sql_products, (
