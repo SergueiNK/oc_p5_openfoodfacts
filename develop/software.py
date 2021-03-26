@@ -63,23 +63,25 @@ class Display:
         for index, product in enumerate(dict_products):
             print(Fore.YELLOW + '{}: nom-{} nutriscore-({})'.format(index, product['generic_name_fr'],
                                                                   product['nutrition_grade_fr'],))
-        print(Fore.YELLOW + "\nq: Quitter le programme \nr: Retour vers la page de categories")
+        print(Fore.YELLOW + Language.user_choice_product_page)
 
         selection = input("Faites votre selection")
         print("votre choix >>> {}".format(selection))
-        # TODO: add in display ex: nutrition_grade_fr:a
-        if selection in ['0', '1', '2', '3']:
+
+        possibilities = [str(index) for index, _ in enumerate(dict_products)]
+        if selection in possibilities:
+            # TODO Cas d'erreur à gérer au cas si la liste n'est pas assez grande
             return self.substitute_page(dict_products[int(selection)], categorie_selectione)
         elif selection == 'q':
             return quit_software()
         elif selection == 'r':
             return self.categories_page()
         else:
-            print (Fore.RED + "Mauvaise selection")
+            print(Fore.RED + "Mauvaise selection")
             return self.product_page(categorie_selectione)
 
     def substitute_page(self, dict_products, categorie_selectione):
-        print(Fore.BLUE + "\n ++++Page Substituts++++ \n")
+        print(Fore.BLUE + Language.welcome_substitute_title)
         if dict_products['nutrition_grade_fr'] in ['c', 'd', 'e']:
             substitute_score = ('a', 'b')
             sql_statement = f"""SELECT generic_name_fr, nutrition_grade_fr, url FROM Products
@@ -94,7 +96,7 @@ class Display:
                 # TODO: add in print 'nutrition_grade_fr', 'url'
                     print(Fore.YELLOW + '{}: nom-{} nutriscore-({}) url-{}'.format(index, product['generic_name_fr'],
                                                         product['nutrition_grade_fr'], product['url']))
-                print(Fore.YELLOW + "\nq: Quitter le programme \ns: Sauvegarder le substitute dasn mes favoris")
+                print(Fore.YELLOW + Language.user_choice_substitute_page)
 
                 selection = input("Faites votre selection")
                 print("votre choix >>> {}".format(selection))
@@ -110,10 +112,9 @@ class Display:
                     print(Fore.RED + "Mauvaise selection")
                     return self.substitute_page(dict_products, categorie_selectione)
             else:
-                # TODO: add case if none substitute product
-                print ("Nous n'avons pas de substituts à vous proposer")
+                print (Language.user_message_nonsubstitute)
                 print(
-                    Fore.YELLOW + "0: Retour au menu principal \nq: Quitter le programme")
+                    Fore.YELLOW + Language.user_message_nonsubstitute)
                 selection = input("Faites votre selection")
                 if selection == '0':
                     return self.home_page()
@@ -123,7 +124,7 @@ class Display:
                     print(Fore.RED + "Mauvaise selection")
                     return self.home_page()
         else:
-            print("Vous avez déjà un trés bon produit")
+            print(Language.user_message_good_product)
             return self.home_page()
         print(self.favorites)
 

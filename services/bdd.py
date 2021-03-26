@@ -15,7 +15,7 @@ class Bdd:
         except mysql.Error as err:
             # TODO: Gérer les erreurs plus proprement
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Something is wrong with your user name or password")
+                print(SqlStatement.message_error_pw)
             elif err.errno == 1049:
                 self.create_database()
                 self.connexion = mysql.connect(**infos_db_purbeurre)

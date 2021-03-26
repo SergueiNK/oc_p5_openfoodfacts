@@ -62,9 +62,17 @@ class Language (str, Enum):
     user_choice_categories_page = "\nq: Quitter le programme \nr: Retour vers la page d'acceuil"
     # TODO: finish to pass string
     welcome_product_title = "\n ++++Page Produits++++ \n"
-    # sql_product_selection =
-    # user_choice_product_page =
+    user_choice_product_page = "\nq: Quitter le programme \nr: Retour vers la page de categories"
+
+    welcome_substitute_title = "\n ++++Page Substituts++++ \n"
+    user_choice_substitute_page = "\nq: Quitter le programme \ns: Sauvegarder le substitute dans mes favoris"
+    user_message_nonsubstitute = "Nous n'avons pas de substituts à vous proposer"
+    user_choice_nonsubstitute = "0: Retour au menu principal \nq: Quitter le programme"
+    user_message_good_product = "Vous avez déjà un trés bon produit"
+
 class SqlStatement (str, Enum):
+
+    message_error_pw = "Something is wrong with your user name or password"
     use_utf8 = "SET NAMES utf8;"
     create_purbeurre = "CREATE DATABASE purbeurre;"
     use_purbeurre = "USE purbeurre;"
