@@ -6,6 +6,7 @@ from mysql.connector import errorcode
 from develop.constants import infos_db_purbeurre, infos_db, create_tables_cmd
 from services.api import api_get_products
 from develop.constants import SqlStatement
+from develop.constants import Language
 
 
 class Bdd:
@@ -15,7 +16,7 @@ class Bdd:
         except mysql.Error as err:
             # TODO: Gérer les erreurs plus proprement
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                print(SqlStatement.message_error_pw)
+                print(Language.message_error_pw)
             elif err.errno == 1049:
                 self.create_database()
                 self.connexion = mysql.connect(**infos_db_purbeurre)
@@ -42,12 +43,10 @@ class Bdd:
 
     def insert_in_tables(self, connector):
         try:
-            # TODO: Le code produit sera t-il une clé en bdd ? Si oui à gérer en cas de vide ou None
-            # TODO: Ne pas importer le produit en cas d'une case vide ou uknown
             cursor = connector.cursor()
             sql_products = SqlStatement.insert_values_products_table
             sql_categories = SqlStatement.insert_values_categories_table
-            sql_stores =SqlStatement.insert_values_stores_table
+            sql_stores = SqlStatement.insert_values_stores_table
             for product in api_get_products():
                 # insert data to product
                 cursor.execute(sql_products, (
@@ -80,7 +79,6 @@ class Bdd:
         cursor = self.connexion.cursor()
         cursor.execute(sql_statement)
         query_results = cursor.fetchall()
-        print(query_results)
         for query_tuple in query_results:
             query_list = list(query_tuple)
             query_object = {}

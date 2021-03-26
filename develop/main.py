@@ -7,6 +7,5 @@ from software import Display
 if __name__ == "__main__":
     Display(Bdd())
 
-
-# TODO: classe Enum dans les constantes langue et bdd
 # TODO: switch case pour les redirections
+# TODO: Ne pas importer le produit en cas d'une case vide ou unknown

@@ -2,7 +2,6 @@
 # -*- coding:utf-8 -*-
 
 # Sql TABLE creation
-# TODO: Add 'name' to product table
 # TODO: Delete the TABLE Place_to_buy
 from enum import Enum
 
@@ -58,9 +57,9 @@ class Language (str, Enum):
     user_choice_home_page = "1: Quel aliment souhaitez-vous remplacer? \n2: Retrouver mes aliments substituts. \n " " \nq: Quitter le programme"
 
     welcome_categories_title = "\n ++++Page Categories++++ \n"
-    sql_categories_selection = """SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY RAND() LIMIT 4"""
+    message_error_pw = "Something is wrong with your user name or password"
     user_choice_categories_page = "\nq: Quitter le programme \nr: Retour vers la page d'acceuil"
-    # TODO: finish to pass string
+
     welcome_product_title = "\n ++++Page Produits++++ \n"
     user_choice_product_page = "\nq: Quitter le programme \nr: Retour vers la page de categories"
 
@@ -70,9 +69,13 @@ class Language (str, Enum):
     user_choice_nonsubstitute = "0: Retour au menu principal \nq: Quitter le programme"
     user_message_good_product = "Vous avez déjà un trés bon produit"
 
+    bad_selection = "Mauvaise selection"
+    do_selection = "Faites votre selection => "
+
+
 class SqlStatement (str, Enum):
 
-    message_error_pw = "Something is wrong with your user name or password"
+    sql_categories_selection = """SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY RAND() LIMIT 4"""
     use_utf8 = "SET NAMES utf8;"
     create_purbeurre = "CREATE DATABASE purbeurre;"
     use_purbeurre = "USE purbeurre;"
@@ -81,4 +84,10 @@ class SqlStatement (str, Enum):
             ingredients_text_with_allergens_fr,code, url, nutrition_grade_fr, name) VALUES (%s, %s, %s, %s, %s, %s, %s); """
     insert_values_categories_table = """INSERT INTO Categories(pnns_groups_1, code) VALUES (%s, %s);"""
     insert_values_stores_table = """INSERT INTO Places_to_buy(stores, code) VALUES (%s, %s);"""
-
+    select_products_from_category = """SELECT DISTINCT generic_name_fr, nutrition_grade_fr FROM Products 
+            INNER JOIN Categories ON Products.code = Categories.code 
+            WHERE Categories.pnns_groups_1 = '%s' ORDER BY RAND() LIMIT 4"""
+    select_substitute_from_product = """SELECT generic_name_fr, nutrition_grade_fr, url FROM Products
+                        INNER JOIN Categories ON Products.code = Categories.code
+                        WHERE Categories.pnns_groups_1 = '%s'
+                        AND nutrition_grade_fr in %s ORDER BY RAND() LIMIT 1"""
