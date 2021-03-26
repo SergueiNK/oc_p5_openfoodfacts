@@ -17,7 +17,8 @@ create_tables_cmd = [
     "CREATE TABLE  Favorites(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(250), product_name_fr_imported "
     "VARCHAR(250), ingredients_text_with_allergens_fr TEXT, code VARCHAR(50), url VARCHAR(250), nutrition_grade_fr "
     "VARCHAR(5), PRIMARY KEY (id))ENGINE=INNODB;",
-    "ALTER TABLE Categories ADD CONSTRAINT fk_categories FOREIGN KEY (id) REFERENCES Products(id)"
+    "CREATE TABLE Favoris(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(250), nutrition_grade_fr VARCHAR(5), url VARCHAR(250), PRIMARY KEY (id));",
+    "ALTER TABLE Categories ADD CONSTRAINT fk_categories FOREIGN KEY (id) REFERENCES Products(id);"
 ]
 
 # Creating data base
@@ -91,3 +92,6 @@ class SqlStatement (str, Enum):
                         INNER JOIN Categories ON Products.code = Categories.code
                         WHERE Categories.pnns_groups_1 = '%s'
                         AND nutrition_grade_fr in %s ORDER BY RAND() LIMIT 1"""
+
+    save_in_table_favoris = """INSERT INTO Favoris (generic_name_fr, nutrition_grade_fr, url) VALUES ('%s', '%s', '%s'); """
+    select_table_favoris = """SELECT * FROM Favoris"""

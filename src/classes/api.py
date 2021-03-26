@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import requests
-from develop.constants import products_params, url_request
+from src.config.constants import products_params, url_request
 import json
 
 

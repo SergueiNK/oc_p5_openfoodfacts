@@ -3,10 +3,10 @@
 
 import mysql.connector as mysql
 from mysql.connector import errorcode
-from develop.constants import infos_db_purbeurre, infos_db, create_tables_cmd
-from services.api import api_get_products
-from develop.constants import SqlStatement
-from develop.constants import Language
+from src.config.constants import infos_db_purbeurre, infos_db, create_tables_cmd
+from src.classes.api import api_get_products
+from src.config.constants import SqlStatement
+from src.config.constants import Language
 
 
 class Bdd:
@@ -86,3 +86,8 @@ class Bdd:
                 query_object[columns[index]] = item
             dict_results.append(query_object)
         return dict_results
+
+    def save(self, sql_statement):
+        cursor = self.connexion.cursor()
+        cursor.execute(sql_statement)
+        self.connexion.commit()
