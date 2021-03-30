@@ -47,7 +47,6 @@ class Bdd:
             cursor = connector.cursor()
             sql_products = SqlStatement.insert_values_products_table
             sql_categories = SqlStatement.insert_values_categories_table
-            sql_stores = SqlStatement.insert_values_stores_table
             for product in api_get_products():
                 # insert data to product
                 cursor.execute(sql_products, (
@@ -58,7 +57,8 @@ class Bdd:
                     product.get('code') if product.get('code') is not None else '',
                     product.get('url') if product.get('url') is not None else '',
                     product.get('nutrition_grade_fr') if product.get('nutrition_grade_fr') is not None else '',
-                    product.get('name') if product.get('name') is not None else ''))
+                    product.get('name') if product.get('name') is not None else '',
+                    product.get('stores') if product.get('stores') is not None else ''))
                 connector.commit()
                 # Insert data to categories
                 cursor.execute(sql_categories, (
@@ -66,12 +66,7 @@ class Bdd:
                     product.get('code') if product.get('code') is not None else '',
                 ))
                 connector.commit()
-                # Insert data to stores
-                cursor.execute(sql_stores, (
-                    product.get('stores') if product.get('stores') is not None else '',
-                    product.get('code') if product.get('code') is not None else '',
-                ))
-                connector.commit()
+
         except Exception as e:
             raise e
 
