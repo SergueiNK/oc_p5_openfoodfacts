@@ -24,7 +24,7 @@ create_tables_cmd = [
 # Creating data base
 infos_db = {
     'user': 'root',
-    'password': 'Server1438!*',
+    'password': 'Aukey2041!*',
     'host': '127.0.0.1'
 }
 
@@ -32,7 +32,7 @@ infos_db = {
 
 infos_db_purbeurre = {
     'user': 'root',
-    'password': 'Server1438!*',
+    'password': 'Aukey2041!*',
     'host': '127.0.0.1',
     'database': 'purbeurre'
 }
@@ -78,6 +78,7 @@ class SqlStatement (str, Enum):
 
     sql_categories_selection = """SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY RAND() LIMIT 4"""
     use_utf8 = "SET NAMES utf8;"
+    apply_utf8 = "SET CHARACTER SET utf8;"
     create_purbeurre = "CREATE DATABASE purbeurre;"
     use_purbeurre = "USE purbeurre;"
     drop_purbeurre = "DROP DATABASE purbeurre;"

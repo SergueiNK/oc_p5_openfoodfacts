@@ -6,6 +6,7 @@ from mysql.connector import errorcode
 from src.config.constants import infos_db_purbeurre, infos_db, create_tables_cmd
 from src.classes.api import api_get_products
 from src.config.constants import SqlStatement
+import sys
 from src.config.constants import Language
 
 
@@ -14,19 +15,19 @@ class Bdd:
         try:
             self.connexion = mysql.connect(**infos_db_purbeurre)
         except mysql.Error as err:
-            # TODO: Gérer les erreurs plus proprement
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                print(Language.message_error_pw)
-            elif err.errno == 1049:
+            if err.errno == 1049:
                 self.create_database()
                 self.connexion = mysql.connect(**infos_db_purbeurre)
+            # si il y a une erreur de connexion alors arrêter le le programme
             else:
-                raise err
+                print(err)
+                sys.exit()
 
     def create_database(self):
         connector = mysql.connect(**infos_db)
         cursor = connector.cursor()
         cursor.execute(SqlStatement.use_utf8)
+        cursor.execute(SqlStatement.apply_utf8)
         cursor.execute(SqlStatement.create_purbeurre)
         cursor.execute(SqlStatement.use_purbeurre)
         try:
