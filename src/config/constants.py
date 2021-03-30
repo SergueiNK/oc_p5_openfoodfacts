@@ -12,7 +12,7 @@ create_tables_cmd = [
     "VARCHAR(5), name VARCHAR(250), stores VARCHAR (250), PRIMARY KEY (id) )ENGINE=INNODB;",
     "CREATE TABLE  Categories(id INT UNSIGNED AUTO_INCREMENT, pnns_groups_1 VARCHAR(500), code VARCHAR(50), PRIMARY KEY "
     "(id))ENGINE=INNODB;",
-    "CREATE TABLE Favoris(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(250), nutrition_grade_fr VARCHAR(5), url VARCHAR(250), PRIMARY KEY (id));",
+    "CREATE TABLE Favoris(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(250), nutrition_grade_fr VARCHAR(5), stores VARCHAR(250), url VARCHAR(250), PRIMARY KEY (id));",
     "ALTER TABLE Categories ADD CONSTRAINT fk_categories FOREIGN KEY (id) REFERENCES Products(id);"
 ]
 
@@ -83,10 +83,11 @@ class SqlStatement (str, Enum):
     select_products_from_category = """SELECT DISTINCT generic_name_fr, nutrition_grade_fr FROM Products 
             INNER JOIN Categories ON Products.code = Categories.code 
             WHERE Categories.pnns_groups_1 = '%s' ORDER BY RAND() LIMIT 4"""
-    select_substitute_from_product = """SELECT generic_name_fr, nutrition_grade_fr, url FROM Products
+    select_substitute_from_product = """SELECT generic_name_fr, nutrition_grade_fr, stores, url  FROM Products
                         INNER JOIN Categories ON Products.code = Categories.code
                         WHERE Categories.pnns_groups_1 = '%s'
-                        AND nutrition_grade_fr in %s ORDER BY RAND() LIMIT 1"""
+                        AND nutrition_grade_fr in %s 
+                        ORDER BY RAND() LIMIT 1"""
 
-    save_in_table_favoris = """INSERT INTO Favoris (generic_name_fr, nutrition_grade_fr, url) VALUES ('%s', '%s', '%s'); """
-    select_table_favoris = """SELECT * FROM Favoris"""
+    save_in_table_favoris = """INSERT INTO Favoris (generic_name_fr, nutrition_grade_fr,stores, url) VALUES ('%s', '%s', '%s', '%s'); """
+    select_table_favoris = """SELECT * FROM Favoris; """

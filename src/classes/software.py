@@ -28,7 +28,7 @@ class Display:
         if selection == '1':
             return self.categories_page()
         elif selection == '2':
-            results = self.bdd.get_query_results(SqlStatement.select_table_favoris, ['id', 'generic_name_fr', 'nutrition_grade_fr', 'url'])
+            results = self.bdd.get_query_results(SqlStatement.select_table_favoris, ['id', 'generic_name_fr', 'nutrition_grade_fr', 'stores', 'url'])
             print(results)
             return self.home_page()
         elif selection == 'q':
@@ -84,13 +84,13 @@ class Display:
             substitute_score = ('a', 'b')
 
             dict_substitute = self.bdd.get_query_results(
-                SqlStatement.select_substitute_from_product % (categorie_selectione['pnns_groups_1'], substitute_score),
-                ['generic_name_fr', 'nutrition_grade_fr', 'url']
+                SqlStatement.select_substitute_from_product % (categorie_selectione['pnns_groups_1'], substitute_score ),
+                ['generic_name_fr', 'nutrition_grade_fr', 'stores', 'url']
             )
             if len(dict_substitute) > 0:
                 for index, product in enumerate(dict_substitute):
-                    print(Fore.YELLOW + 'nom-{} nutriscore-({}) url-{}'.format(product['generic_name_fr'],
-                                                        product['nutrition_grade_fr'], product['url']))
+                    print(Fore.YELLOW + 'nom-{} nutriscore-({}) stores-{} url-{}'.format(product['generic_name_fr'],
+                                                        product['nutrition_grade_fr'], product['stores'], product['url']))
                 print(Fore.YELLOW + Language.user_choice_substitute_page)
 
                 selection = input('{}'.format(Language.do_selection))
@@ -100,12 +100,14 @@ class Display:
                     print(SqlStatement.save_in_table_favoris % (
                             dict_substitute[0]['generic_name_fr'],
                             dict_substitute[0]['nutrition_grade_fr'],
+                            dict_substitute[0]['stores'],
                             dict_substitute[0]['url']
                         ))
                     self.bdd.save(
                         SqlStatement.save_in_table_favoris % (
                             dict_substitute[0]['generic_name_fr'],
                             dict_substitute[0]['nutrition_grade_fr'],
+                            dict_substitute[0]['stores'],
                             dict_substitute[0]['url']
                         )
                     )
