@@ -28,10 +28,7 @@ class Display:
         if selection == '1':
             return self.categories_page()
         elif selection == '2':
-            results = self.bdd.get_query_results(SqlStatement.select_table_favoris, ['id', 'generic_name_fr', 'nutrition_grade_fr', 'stores', 'url'])
-            for index, infos_favoris in enumerate(results):
-                print(Fore.YELLOW + '{}: {} -({}) {}- {}-' .format(index, infos_favoris['generic_name_fr'], infos_favoris['nutrition_grade_fr'], infos_favoris['stores'], infos_favoris['url']))
-            return self.home_page()
+            return self.saved_substitut_page()
         elif selection == 'q':
             return quit_software()
         else:
@@ -132,4 +129,31 @@ class Display:
         else:
             print(Fore.YELLOW + Language.user_message_good_product)
             return self.home_page()
+
+    def saved_substitut_page(self):
+        print(Fore.BLUE + Language.welcome_saved_substitute_title)
+        results = self.bdd.get_query_results(SqlStatement.select_table_favoris,
+                                             ['id', 'generic_name_fr',
+                                              'nutrition_grade_fr', 'stores',
+                                              'url'])
+        for index, infos_favoris in enumerate(results):
+            print(Fore.YELLOW + '{}: {} -({}) {}- {}-'.format(index,
+                                                              infos_favoris[
+                                                                  'generic_name_fr'],
+                                                              infos_favoris[
+                                                                  'nutrition_grade_fr'],
+                                                              infos_favoris[
+                                                                  'stores'],
+                                                              infos_favoris[
+                                                                  'url']))
+        print(Fore.YELLOW + Language.user_choice_saved_substitute_page)
+
+        selection = input('{}'.format(Language.do_selection))
+        if selection == 'r':
+            return self.home_page()
+        elif selection == 'q':
+            return quit_software()
+        else:
+            print(Fore.RED + Language.bad_selection)
+            return self.saved_substitut_page()
 

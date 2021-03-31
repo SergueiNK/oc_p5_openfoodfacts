@@ -64,6 +64,9 @@ class Language (str, Enum):
     user_choice_nonsubstitute = "0: Retour au menu principal \nq: Quitter le programme"
     user_message_good_product = "Vous avez déjà un trés bon produit"
 
+    welcome_saved_substitute_title = "\n ++++Votre page de substituts sauvegardés++++ \n"
+    user_choice_saved_substitute_page = "\nq: Quitter le programme \nr: Retour vers la page d'acceuil"
+
     bad_selection = "Mauvaise selection"
     do_selection = "Faites votre selection => "
 
