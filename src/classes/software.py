@@ -29,7 +29,8 @@ class Display:
             return self.categories_page()
         elif selection == '2':
             results = self.bdd.get_query_results(SqlStatement.select_table_favoris, ['id', 'generic_name_fr', 'nutrition_grade_fr', 'stores', 'url'])
-            print(results)
+            for index, infos_favoris in enumerate(results):
+                print(Fore.YELLOW + '{}: {} -({}) {}- {}-' .format(index, infos_favoris['generic_name_fr'], infos_favoris['nutrition_grade_fr'], infos_favoris['stores'], infos_favoris['url']))
             return self.home_page()
         elif selection == 'q':
             return quit_software()
@@ -96,13 +97,13 @@ class Display:
                 selection = input('{}'.format(Language.do_selection))
                 if selection == 's':
                     # TODO: Save favorite in table and back to home
-                    print(dict_substitute)
-                    print(SqlStatement.save_in_table_favoris % (
-                            dict_substitute[0]['generic_name_fr'],
-                            dict_substitute[0]['nutrition_grade_fr'],
-                            dict_substitute[0]['stores'],
-                            dict_substitute[0]['url']
-                        ))
+                    # print(dict_substitute)
+                    # print(SqlStatement.save_in_table_favoris % (
+                    #         dict_substitute[0]['generic_name_fr'],
+                    #         dict_substitute[0]['nutrition_grade_fr'],
+                    #         dict_substitute[0]['stores'],
+                    #         dict_substitute[0]['url']
+                    #     ))
                     self.bdd.save(
                         SqlStatement.save_in_table_favoris % (
                             dict_substitute[0]['generic_name_fr'],
