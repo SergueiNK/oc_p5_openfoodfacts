@@ -7,9 +7,8 @@ from enum import Enum
 
 
 create_tables_cmd = [
-    "CREATE TABLE  Products(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(250), product_name_fr_imported "
-    "VARCHAR(250), ingredients_text_with_allergens_fr TEXT, code VARCHAR(50), url VARCHAR(250), nutrition_grade_fr "
-    "VARCHAR(5), name VARCHAR(250), stores VARCHAR (250), PRIMARY KEY (id) )ENGINE=INNODB;",
+    "CREATE TABLE  Products(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(250), code VARCHAR(50), url VARCHAR(250), nutrition_grade_fr "
+    "VARCHAR(5), stores VARCHAR (250), PRIMARY KEY (id) )ENGINE=INNODB;",
     "CREATE TABLE  Categories(id INT UNSIGNED AUTO_INCREMENT, pnns_groups_1 VARCHAR(500), code VARCHAR(50), PRIMARY KEY "
     "(id))ENGINE=INNODB;",
     "CREATE TABLE Favoris(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(250), nutrition_grade_fr VARCHAR(5), stores VARCHAR(250), url VARCHAR(250), PRIMARY KEY (id));",
@@ -42,8 +41,8 @@ products_params = {
     "page_size": 50,
     "json": 1,
     "page": 1,
-    "fields": "pnns_groups_1,stores,generic_name_fr,product_name_fr_imported,"
-              "ingredients_text_with_allergens_fr,code,url,nutrition_grade_fr,name,stores"
+    "fields": "pnns_groups_1,generic_name_fr,"
+              "code,url,nutrition_grade_fr,stores"
 }
 
 
@@ -77,8 +76,8 @@ class SqlStatement (str, Enum):
     create_purbeurre = "CREATE DATABASE purbeurre;"
     use_purbeurre = "USE purbeurre;"
     drop_purbeurre = "DROP DATABASE purbeurre;"
-    insert_values_products_table = """INSERT INTO Products(generic_name_fr,product_name_fr_imported, 
-            ingredients_text_with_allergens_fr,code, url, nutrition_grade_fr, name, stores) VALUES (%s, %s, %s, %s, %s, %s, %s, %s); """
+    insert_values_products_table = """INSERT INTO Products(generic_name_fr, 
+            code, url, nutrition_grade_fr,stores) VALUES (%s, %s, %s, %s, %s); """
     insert_values_categories_table = """INSERT INTO Categories(pnns_groups_1, code) VALUES (%s, %s);"""
     select_products_from_category = """SELECT DISTINCT generic_name_fr, nutrition_grade_fr FROM Products 
             INNER JOIN Categories ON Products.code = Categories.code 

@@ -51,13 +51,9 @@ class Bdd:
                 # insert data to product
                 cursor.execute(sql_products, (
                     product.get('generic_name_fr') if product.get('generic_name_fr') is not None else '',
-                    product.get('product_name_fr_imported') if product.get('product_name_fr_imported') is not None else '',
-                    product.get('ingredients_text_with_allergens_fr') if product.get(
-                        'ingredients_text_with_allergens_fr') is not None else '',
                     product.get('code') if product.get('code') is not None else '',
                     product.get('url') if product.get('url') is not None else '',
                     product.get('nutrition_grade_fr') if product.get('nutrition_grade_fr') is not None else '',
-                    product.get('name') if product.get('name') is not None else '',
                     product.get('stores') if product.get('stores') is not None else ''))
                 connector.commit()
                 # Insert data to categories
