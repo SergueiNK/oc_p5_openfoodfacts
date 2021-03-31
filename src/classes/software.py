@@ -61,7 +61,7 @@ class Display:
         print(Fore.BLUE + Language.welcome_product_title)
         dict_products = self.bdd.get_query_results(SqlStatement.select_products_from_category % (categorie_selectione['pnns_groups_1']), ['generic_name_fr', 'nutrition_grade_fr'])
         for index, product in enumerate(dict_products):
-            print(Fore.YELLOW + '{}: nom-{} nutriscore-({})'.format(index, product['generic_name_fr'],
+            print(Fore.YELLOW + '{}: {} nutriscore-({})'.format(index, product['generic_name_fr'],
                                                                   product['nutrition_grade_fr'],))
         print(Fore.YELLOW + Language.user_choice_product_page)
 
@@ -89,7 +89,7 @@ class Display:
             )
             if len(dict_substitute) > 0:
                 for index, product in enumerate(dict_substitute):
-                    print(Fore.YELLOW + 'nom-{} nutriscore-({}) stores-{} url-{}'.format(product['generic_name_fr'],
+                    print(Fore.YELLOW + '{} nutriscore-({}) magasins:{} url-{}'.format(product['generic_name_fr'],
                                                         product['nutrition_grade_fr'], product['stores'], product['url']))
                 print(Fore.YELLOW + Language.user_choice_substitute_page)
 
@@ -129,6 +129,6 @@ class Display:
                     print(Fore.RED + Language.bad_selection)
                     return self.home_page()
         else:
-            print(Language.user_message_good_product)
+            print(Fore.YELLOW + Language.user_message_good_product)
             return self.home_page()
 
