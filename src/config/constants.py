@@ -73,7 +73,7 @@ class Language (str, Enum):
 
 class SqlStatement (str, Enum):
 
-    sql_categories_selection = """SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY RAND() LIMIT 4"""
+    sql_categories_selection = """SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY id LIMIT 4"""
     use_utf8 = "SET NAMES utf8;"
     apply_utf8 = "SET CHARACTER SET utf8;"
     create_purbeurre = "CREATE DATABASE purbeurre;"
