@@ -7,7 +7,7 @@ from enum import Enum
 
 
 create_tables_cmd = [
-    "CREATE TABLE  Products(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(250), code VARCHAR(50), url VARCHAR(250), nutrition_grade_fr "
+    "CREATE TABLE  Products(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(500), code VARCHAR(50), url VARCHAR(250), nutrition_grade_fr "
     "VARCHAR(5), stores VARCHAR (250), PRIMARY KEY (id) )ENGINE=INNODB;",
     "CREATE TABLE  Categories(id INT UNSIGNED AUTO_INCREMENT, pnns_groups_1 VARCHAR(500), code VARCHAR(50), PRIMARY KEY "
     "(id))ENGINE=INNODB;",
