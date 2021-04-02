@@ -93,14 +93,7 @@ class Display:
 
                 selection = input('{}'.format(Language.do_selection))
                 if selection == 's':
-                    # TODO: Save favorite in table and back to home
-                    # print(dict_substitute)
-                    # print(SqlStatement.save_in_table_favoris % (
-                    #         dict_substitute[0]['generic_name_fr'],
-                    #         dict_substitute[0]['nutrition_grade_fr'],
-                    #         dict_substitute[0]['stores'],
-                    #         dict_substitute[0]['url']
-                    #     ))
+
                     self.bdd.save(
                         SqlStatement.save_in_table_favoris % (
                             dict_substitute[0]['generic_name_fr'],

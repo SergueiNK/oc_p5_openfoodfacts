@@ -7,7 +7,7 @@ from src.config.constants import infos_db_purbeurre, infos_db, create_tables_cmd
 from src.classes.api import api_get_products
 from src.config.constants import SqlStatement
 import sys
-from src.config.constants import Language
+
 
 
 class Bdd:

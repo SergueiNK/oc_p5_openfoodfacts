@@ -3,8 +3,9 @@
 
 from src.classes.bdd import Bdd
 from src.classes.software import Display
+"""Program "Pur Beurre" """
 
 if __name__ == "__main__":
+    """The main of program. Start the program"""
     Display(Bdd())
 
-# TODO: Ne pas importer le produit en cas d'une case vide ou unknown
