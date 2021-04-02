@@ -8,6 +8,7 @@ import json
 
 # récuperation de l'API
 def api_get_products():
+    """Launch the API fetch"""
     try:
         request_response = requests.get(url_request, products_params)
         response = json.loads(request_response.text)

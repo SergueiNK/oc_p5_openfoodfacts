@@ -7,20 +7,30 @@ from src.config.constants import SqlStatement
 
 
 def quit_software():
-    #TODO: TRUCATE TABLE Favoris at end of program ?
+    """Exit software"""
     exit()
 
 
 class Display:
     # Lancer le programme purbeurre
     favorites = []
+    """
+    class Display who defined the display of software
+    Methods: __init__, home_page, categories_page,
+            product_page, substitute_page, saved_substitut_page 
+    """
 
     def __init__(self, bdd):
+        """Initialize the bbd and dispalay of home page"""
         self.bdd = bdd
         self.home_page()
 
     def home_page(self):
-        # Afficher la phrase 1 : Purbeurre est votre meilleur compagnon sur le schéma de la meilleur nutrition
+        """
+        Display the home page for user in command line interface.
+        Return a list of choice
+        """
+
         print(Fore.BLUE + Language.welcome_home_title)
         print(Fore.GREEN + Language.description_purbeurre_title)
         print(Fore.YELLOW + Language.user_choice_home_page)
@@ -36,9 +46,12 @@ class Display:
             return self.home_page()
 
     def categories_page(self):
-        # Afficher la phrase 2: Sélectionez la categorie de l'aliment
+        """
+        Display the categories page for user in command line interface.
+        Return a list of choice
+        """
+
         print(Fore.BLUE + Language.welcome_categories_title)
-        # Afficher la liste de la class Categories de la méthode def select_categories():
         sql_statement = SqlStatement.sql_categories_selection
         dict_categories = self.bdd.get_query_results(sql_statement, ['pnns_groups_1'])
         for index, category in enumerate(dict_categories):
@@ -56,6 +69,10 @@ class Display:
             return self.categories_page()
 
     def product_page(self, categorie_selectione):
+        """
+        Display the products page for user in command line interface.
+        Return a list of choice
+        """
         print(Fore.BLUE + Language.welcome_product_title)
         dict_products = self.bdd.get_query_results(SqlStatement.select_products_from_category % (categorie_selectione['pnns_groups_1']), ['generic_name_fr', 'nutrition_grade_fr'])
         for index, product in enumerate(dict_products):
@@ -77,6 +94,10 @@ class Display:
             return self.product_page(categorie_selectione)
 
     def substitute_page(self, dict_products, categorie_selectione):
+        """
+        Display the substitute page for user in command line interface.
+        Return a list of choice
+        """
         print(Fore.BLUE + Language.welcome_substitute_title)
         if dict_products['nutrition_grade_fr'] in ['c', 'd', 'e']:
             substitute_score = ('a', 'b')
@@ -124,6 +145,10 @@ class Display:
             return self.home_page()
 
     def saved_substitut_page(self):
+        """
+        Display the substitute page for user in command line interface.
+        Return a list of choice
+        """
         print(Fore.BLUE + Language.welcome_saved_substitute_title)
         results = self.bdd.get_query_results(SqlStatement.select_table_favoris,
                                              ['id', 'generic_name_fr',

@@ -1,8 +1,8 @@
 #!/usr/bin/python3.9
 # -*- coding:utf-8 -*-
 
-from src.classes.bdd import Bdd
-from src.classes.software import Display
+from src.purbeurre.bdd import Bdd
+from src.purbeurre.software import Display
 """Program "Pur Beurre" """
 
 if __name__ == "__main__":

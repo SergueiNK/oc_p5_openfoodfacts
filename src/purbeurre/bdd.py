@@ -4,13 +4,15 @@
 import mysql.connector as mysql
 from mysql.connector import errorcode
 from src.config.constants import infos_db_purbeurre, infos_db, create_tables_cmd
-from src.classes.api import api_get_products
+from src.purbeurre.api import api_get_products
 from src.config.constants import SqlStatement
 import sys
 
 
-
 class Bdd:
+    """
+    class Bdd who defined the creation and modifications of data base
+    """
     def __init__(self):
         try:
             self.connexion = mysql.connect(**infos_db_purbeurre)

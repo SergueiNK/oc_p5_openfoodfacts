@@ -3,7 +3,8 @@
 
 from enum import Enum
 
-# Sql command. Create tables Products, Categories, Favoris
+
+"""Sql command. Create tables Products, Categories, Favoris"""
 create_tables_cmd = [
     "CREATE TABLE  Products(id INT UNSIGNED AUTO_INCREMENT, generic_name_fr VARCHAR(500), code VARCHAR(50), url VARCHAR(250), nutrition_grade_fr "
     "VARCHAR(5), stores VARCHAR (250), PRIMARY KEY (id) )ENGINE=INNODB;",
@@ -13,15 +14,14 @@ create_tables_cmd = [
     "ALTER TABLE Categories ADD CONSTRAINT fk_categories FOREIGN KEY (id) REFERENCES Products(id);"
 ]
 
-# Creating data base
+"""Creating data base"""
 infos_db = {
     'user': 'root',
     'password': 'Aukey2041!*',
     'host': '127.0.0.1'
 }
 
-# Connexion to database
-
+"""Connexion to database"""
 infos_db_purbeurre = {
     'user': 'root',
     'password': 'Aukey2041!*',
@@ -30,7 +30,7 @@ infos_db_purbeurre = {
 }
 
 
-# Constants for API requests
+"""Constants for API requests"""
 # REMINDER: without space in fields
 url_request = 'https://fr.openfoodfacts.org/cgi/search.pl'
 products_params = {
@@ -50,47 +50,53 @@ class Language (str, Enum):
     that will be print on user display
     """
 
-    # List of constants to print on home page
+    """List of constants to print on home page"""
     welcome_home_title = "\n++++Page d'acceuil++++\n"
-    description_purbeurre_title = "\nPurbeurre est votre meilleur compagnon sur le schéma de la meilleur nutrition! \n"
+    description_purbeurre_title = "\npurbeurre est votre meilleur compagnon sur le schéma de la meilleur nutrition! \n"
     user_choice_home_page = "1: Quel aliment souhaitez-vous remplacer? \n2: Retrouver mes aliments substituts. \n " " \nq: Quitter le programme"
 
-    # List of constants to print on Categories page
+    """List of constants to print on Categories page"""
     welcome_categories_title = "\n ++++Page Categories++++ \n"
     message_error_pw = "Something is wrong with your user name or password"
     user_choice_categories_page = "\nq: Quitter le programme \nr: Retour vers la page d'acceuil"
 
-    # List of constants to print on Products page
+    """List of constants to print on Products page"""
     welcome_product_title = "\n ++++Page Produits++++ \n"
     user_choice_product_page = "\nq: Quitter le programme \nr: Retour vers la page de categories"
 
-    # List of constants to print on Substitutes page
+    """List of constants to print on Substitutes page"""
     welcome_substitute_title = "\n ++++Page Substituts++++ \n"
     user_choice_substitute_page = "\nq: Quitter le programme \ns: Sauvegarder le substitute dans mes favoris"
     user_message_nonsubstitute = "Nous n'avons pas de substituts à vous proposer"
     user_choice_nonsubstitute = "0: Retour au menu principal \nq: Quitter le programme"
     user_message_good_product = "Vous avez déjà un trés bon produit"
 
-    # List of constants to print on saved Substitutes page
+    """List of constants to print on saved Substitutes page"""
     welcome_saved_substitute_title = "\n ++++Votre page de substituts sauvegardés++++ \n"
     user_choice_saved_substitute_page = "\nq: Quitter le programme \nr: Retour vers la page d'acceuil"
 
-    # List of generals constants to print
+    """List of generals constants to print"""
     bad_selection = "Mauvaise selection"
     do_selection = "Faites votre selection => "
 
 
 class SqlStatement (str, Enum):
     """
-
+    class SqlStatement who defined the commands SQL
+    for work with data base
     """
 
-    sql_categories_selection = """SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY id LIMIT 4"""
+    """Sql constants for use utf8"""
     use_utf8 = "SET NAMES utf8;"
     apply_utf8 = "SET CHARACTER SET utf8;"
+
+    """Sql constants for interact with database"""
     create_purbeurre = "CREATE DATABASE purbeurre;"
     use_purbeurre = "USE purbeurre;"
     drop_purbeurre = "DROP DATABASE purbeurre;"
+
+    """Sql constants for sort and edit the tables"""
+    sql_categories_selection = """SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY id LIMIT 4"""
     insert_values_products_table = """INSERT INTO Products(generic_name_fr, 
             code, url, nutrition_grade_fr,stores) VALUES (%s, %s, %s, %s, %s); """
     insert_values_categories_table = """INSERT INTO Categories(pnns_groups_1, code) VALUES (%s, %s);"""
