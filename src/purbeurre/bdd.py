@@ -14,18 +14,20 @@ class Bdd:
     class Bdd who defined the creation and modifications of data base
     """
     def __init__(self):
+        """Initialize the connexion to Mysql and print error if not"""
         try:
             self.connexion = mysql.connect(**infos_db_purbeurre)
         except mysql.Error as err:
             if err.errno == 1049:
                 self.create_database()
                 self.connexion = mysql.connect(**infos_db_purbeurre)
-            # si il y a une erreur de connexion alors arrêter le le programme
+            # If error connexion stop software
             else:
                 print(err)
                 sys.exit()
 
     def create_database(self):
+        """Create the database purbeurre"""
         connector = mysql.connect(**infos_db)
         cursor = connector.cursor()
         cursor.execute(SqlStatement.use_utf8)
@@ -45,13 +47,14 @@ class Bdd:
             raise e
 
     def insert_in_tables(self, connector):
+        """Insert values to tables """
         try:
             cursor = connector.cursor()
             sql_products = SqlStatement.insert_values_products_table
             sql_categories = SqlStatement.insert_values_categories_table
             for product in api_get_products():
-                # insert data to product
 
+                # Insert verified data to products
                 if self.verify_product(product):
                     cursor.execute(sql_products, (
                         product.get('generic_name_fr'),
@@ -60,7 +63,7 @@ class Bdd:
                         product.get('nutrition_grade_fr'),
                         product.get('stores')))
                     connector.commit()
-                    # Insert data to categories
+                    # Insert verified data to categories
                     cursor.execute(sql_categories, (
                         product.get('pnns_groups_1'),
                         product.get('code')
@@ -71,6 +74,7 @@ class Bdd:
             raise e
 
     def get_query_results(self, sql_statement, columns):
+        """Transform the result on dictionnary"""
         dict_results = []
         cursor = self.connexion.cursor()
         cursor.execute(sql_statement)
@@ -84,11 +88,13 @@ class Bdd:
         return dict_results
 
     def save(self, sql_statement):
+        """Save the user selection in database"""
         cursor = self.connexion.cursor()
         cursor.execute(sql_statement)
         self.connexion.commit()
 
     def verify_product(self, product):
+        """ Check and sort the API before insert in tables """
         if product.get('generic_name_fr') \
                 and product.get('generic_name_fr') != 'unknown' \
                 and product.get('generic_name_fr') != '' \
