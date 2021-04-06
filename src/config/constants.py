@@ -93,7 +93,6 @@ class SqlStatement (str, Enum):
     """Sql constants for interact with database"""
     create_purbeurre = "CREATE DATABASE purbeurre;"
     use_purbeurre = "USE purbeurre;"
-    drop_purbeurre = "DROP DATABASE purbeurre;"
 
     """Sql constants for sort and edit the tables"""
     sql_categories_selection = """SELECT DISTINCT pnns_groups_1 FROM Categories ORDER BY id LIMIT 4"""
