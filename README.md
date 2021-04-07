@@ -1,8 +1,10 @@
 # oc_p5_openfoodfacts
    **Purbeurre**
 
-Program that request data from the OpenFoodFacts API. Sort it out and insert it in differents tables. 
-The user thanks to command-line interface could select and save the better nutriscores' products. 
+Program that request data from the OpenFoodFacts API. Sort it out and insert 
+it in differents tables. 
+The user thanks to command-line interface could select and save the better
+ nutriscores' products. 
 
 **About that Readme**  
 
@@ -60,6 +62,7 @@ infos_db_purbeurre = {
     'host': '127.0.0.1',
     'database': 'purbeurre'
 
-For launch the creation of database on your local terminal : python create_bdd.py
+For launch the creation of database on your local terminal : 
+python create_bdd.py
 
 For launch the program on your local terminal : python main.py

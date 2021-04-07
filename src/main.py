@@ -8,4 +8,3 @@ from src.purbeurre.software import Display
 if __name__ == "__main__":
     """The main of program. Start the program"""
     Display(Bdd())
-

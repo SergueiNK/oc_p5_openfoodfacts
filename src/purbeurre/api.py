@@ -6,7 +6,7 @@ from src.config.constants import products_params, url_request
 import json
 
 
-# récuperation de l'API
+# get API
 def api_get_products():
     """Launch the API fetch"""
     try:
@@ -15,4 +15,3 @@ def api_get_products():
         return response.get('products')
     except Exception as e:
         raise e
-

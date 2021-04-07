@@ -2,10 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import mysql.connector as mysql
-from mysql.connector import errorcode
-from src.config.constants import infos_db_purbeurre, infos_db, create_tables_cmd
-from src.purbeurre.api import api_get_products
-from src.config.constants import SqlStatement
+from src.config.constants import infos_db_purbeurre
 import sys
 
 
@@ -20,7 +17,6 @@ class Bdd:
         except mysql.Error as err:
             print(err)
             sys.exit()
-
 
     def get_query_results(self, sql_statement, columns):
         """Transform the result on dictionnary"""
@@ -41,5 +37,4 @@ class Bdd:
         cursor = self.connexion.cursor()
         cursor.execute(sql_statement)
         self.connexion.commit()
-
 

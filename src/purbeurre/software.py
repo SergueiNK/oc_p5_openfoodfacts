@@ -53,9 +53,11 @@ class Display:
 
         print(Fore.BLUE + Language.welcome_categories_title)
         sql_statement = SqlStatement.sql_categories_selection
-        dict_categories = self.bdd.get_query_results(sql_statement, ['pnns_groups_1'])
+        dict_categories = \
+            self.bdd.get_query_results(sql_statement, ['pnns_groups_1'])
         for index, category in enumerate(dict_categories):
-            print(Fore.YELLOW + '{}: {}'.format(index, category['pnns_groups_1']))
+            print((Fore.YELLOW + '{}: {}'
+                   .format(index, category['pnns_groups_1'])))
         print(Fore.YELLOW + Language.user_choice_categories_page)
         selection = input('{}'.format(Language.do_selection))
         if selection in ['0', '1', '2', '3']:
@@ -74,17 +76,26 @@ class Display:
         Return a list of choice
         """
         print(Fore.BLUE + Language.welcome_product_title)
-        dict_products = self.bdd.get_query_results(SqlStatement.select_products_from_category % (categorie_selectione['pnns_groups_1']), ['generic_name_fr', 'nutrition_grade_fr'])
+        dict_products = (self.bdd
+                         .get_query_results(SqlStatement
+                                            .select_products_from_category %
+                                            (categorie_selectione
+                                                ['pnns_groups_1']),
+                                            ['generic_name_fr',
+                                                'nutrition_grade_fr']))
+
         for index, product in enumerate(dict_products):
-            print(Fore.YELLOW + '{}: {} nutriscore-({})'.format(index, product['generic_name_fr'],
-                                                                  product['nutrition_grade_fr'],))
+            print((Fore.YELLOW + '{}: {} nutriscore-({})'
+                   .format(index, product['generic_name_fr'],
+                           product['nutrition_grade_fr'],)))
         print(Fore.YELLOW + Language.user_choice_product_page)
 
         selection = input('{}'.format(Language.do_selection))
 
         possibilities = [str(index) for index, _ in enumerate(dict_products)]
         if selection in possibilities:
-            return self.substitute_page(dict_products[int(selection)], categorie_selectione)
+            return (self.substitute_page(dict_products[int(selection)],
+                    categorie_selectione))
         elif selection == 'q':
             return quit_software()
         elif selection == 'r':
@@ -102,14 +113,17 @@ class Display:
         if dict_products['nutrition_grade_fr'] in ['c', 'd', 'e']:
             substitute_score = ('a', 'b')
 
-            dict_substitute = self.bdd.get_query_results(
-                SqlStatement.select_substitute_from_product % (categorie_selectione['pnns_groups_1'], substitute_score ),
+            dict_substitute = (self.bdd.get_query_results(
+                SqlStatement.select_substitute_from_product %
+                (categorie_selectione['pnns_groups_1'], substitute_score),
                 ['generic_name_fr', 'nutrition_grade_fr', 'stores', 'url']
-            )
+            ))
             if len(dict_substitute) > 0:
                 for index, product in enumerate(dict_substitute):
-                    print(Fore.YELLOW + '{} nutriscore-({}) magasins:{} url-{}'.format(product['generic_name_fr'],
-                                                        product['nutrition_grade_fr'], product['stores'], product['url']))
+                    print((Fore.YELLOW + '{} nutriscore-({}) magasins:{} url-{}'
+                           .format(product['generic_name_fr'],
+                                   product['nutrition_grade_fr'],
+                                   product['stores'], product['url'])))
                 print(Fore.YELLOW + Language.user_choice_substitute_page)
 
                 selection = input('{}'.format(Language.do_selection))
@@ -128,7 +142,8 @@ class Display:
                     return quit_software()
                 else:
                     print(Fore.RED + Language.bad_selection)
-                    return self.substitute_page(dict_products, categorie_selectione)
+                    return (self.substitute_page(dict_products,
+                                                 categorie_selectione))
             else:
                 print(Fore.YELLOW + Language.user_message_nonsubstitute)
                 print(Fore.YELLOW + Language.user_choice_nonsubstitute)
@@ -155,15 +170,10 @@ class Display:
                                               'nutrition_grade_fr', 'stores',
                                               'url'])
         for index, infos_favoris in enumerate(results):
-            print(Fore.YELLOW + '{}: {} -({}) {}- {}-'.format(index,
-                                                              infos_favoris[
-                                                                  'generic_name_fr'],
-                                                              infos_favoris[
-                                                                  'nutrition_grade_fr'],
-                                                              infos_favoris[
-                                                                  'stores'],
-                                                              infos_favoris[
-                                                                  'url']))
+            print((Fore.YELLOW + '{}: {} -({}) {}- {}-'
+                   .format(index, infos_favoris['generic_name_fr'],
+                           infos_favoris['nutrition_grade_fr'],
+                           infos_favoris['stores'], infos_favoris['url'])))
         print(Fore.YELLOW + Language.user_choice_saved_substitute_page)
 
         selection = input('{}'.format(Language.do_selection))
@@ -174,4 +184,3 @@ class Display:
         else:
             print(Fore.RED + Language.bad_selection)
             return self.saved_substitut_page()
-

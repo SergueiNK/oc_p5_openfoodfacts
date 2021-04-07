@@ -5,6 +5,7 @@ from src.config.constants import infos_db, create_tables_cmd
 from src.purbeurre.api import api_get_products
 from src.config.constants import SqlStatement
 
+
 def create_database():
     """Create the database purbeurre"""
     try:
@@ -27,6 +28,7 @@ def create_database():
     except Exception as e:
         # print(e)
         raise e
+
 
 def insert_in_tables(connector):
     """Insert values to tables """
@@ -82,6 +84,7 @@ def verify_product(product):
         return True
     else:
         return False
+
 
 if __name__ == "__main__":
     try:
