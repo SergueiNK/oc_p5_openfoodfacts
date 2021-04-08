@@ -12,7 +12,7 @@ def quit_software():
 
 
 class Display:
-    # Lancer le programme purbeurre
+    # Start purbeurre
     favorites = []
     """
     class Display who defined the display of software
@@ -116,7 +116,7 @@ class Display:
             dict_substitute = (self.bdd.get_query_results(
                 SqlStatement.select_substitute_from_product %
                 (categorie_selectione['pnns_groups_1'], substitute_score),
-                ['generic_name_fr', 'nutrition_grade_fr', 'stores', 'url']
+                ['id', 'generic_name_fr', 'nutrition_grade_fr', 'stores', 'url']
             ))
             if len(dict_substitute) > 0:
                 for index, product in enumerate(dict_substitute):
@@ -131,10 +131,7 @@ class Display:
 
                     self.bdd.save(
                         SqlStatement.save_in_table_favoris % (
-                            dict_substitute[0]['generic_name_fr'],
-                            dict_substitute[0]['nutrition_grade_fr'],
-                            dict_substitute[0]['stores'],
-                            dict_substitute[0]['url']
+                            dict_substitute[0]['id']
                         )
                     )
                     return self.home_page()
@@ -165,12 +162,13 @@ class Display:
         Return a list of choice
         """
         print(Fore.BLUE + Language.welcome_saved_substitute_title)
-        results = self.bdd.get_query_results(SqlStatement.select_table_favoris,
-                                             ['id', 'generic_name_fr',
-                                              'nutrition_grade_fr', 'stores',
-                                              'url'])
+        results = self.bdd\
+            .get_query_results(SqlStatement.select_favoris_from_product,
+                               ['generic_name_fr',
+                                'nutrition_grade_fr', 'stores',
+                                'url'])
         for index, infos_favoris in enumerate(results):
-            print((Fore.YELLOW + '{}: {} -({}) {}- {}-'
+            print((Fore.YELLOW + '{} {} nutriscore-({}) magasins:{} url-{}'
                    .format(index, infos_favoris['generic_name_fr'],
                            infos_favoris['nutrition_grade_fr'],
                            infos_favoris['stores'], infos_favoris['url'])))

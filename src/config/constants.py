@@ -5,19 +5,53 @@ from enum import Enum
 
 
 """Sql command. Create tables Products, Categories, Favoris"""
+# create_tables_cmd = [
+#     "CREATE TABLE  Products(id INT UNSIGNED AUTO_INCREMENT, "
+#     "generic_name_fr VARCHAR(500), code VARCHAR(50), url VARCHAR(250), "
+#     "nutrition_grade_fr VARCHAR(5), stores VARCHAR (250), "
+#     "PRIMARY KEY (id) )ENGINE=INNODB;",
+#     "CREATE TABLE  Categories(id INT UNSIGNED AUTO_INCREMENT, "
+#     "pnns_groups_1 VARCHAR(500), code VARCHAR(50), PRIMARY KEY "
+#     "(id))ENGINE=INNODB;",
+#     "CREATE TABLE Favoris(id_favoris INT UNSIGNED AUTO_INCREMENT, "
+#     "PRIMARY KEY (id_favoris))ENGINE=INNODB;",
+#     "ALTER TABLE Categories ADD CONSTRAINT "
+#     "fk_categories FOREIGN KEY (id) REFERENCES Products(id);",
+#     "ALTER TABLE Favoris ADD CONSTRAINT "
+#     "fk_favoris FOREIGN KEY (id) REFERENCES Products(id);"
+# ]
+
 create_tables_cmd = [
-    "CREATE TABLE  Products(id INT UNSIGNED AUTO_INCREMENT, "
-    "generic_name_fr VARCHAR(500), code VARCHAR(50), url VARCHAR(250), "
-    "nutrition_grade_fr VARCHAR(5), stores VARCHAR (250), "
-    "PRIMARY KEY (id) )ENGINE=INNODB;",
-    "CREATE TABLE  Categories(id INT UNSIGNED AUTO_INCREMENT, "
-    "pnns_groups_1 VARCHAR(500), code VARCHAR(50), PRIMARY KEY "
-    "(id))ENGINE=INNODB;",
-    "CREATE TABLE Favoris(id INT UNSIGNED AUTO_INCREMENT, "
-    "generic_name_fr VARCHAR(250), nutrition_grade_fr VARCHAR(5), "
-    "stores VARCHAR(250), url VARCHAR(250), PRIMARY KEY (id));",
-    "ALTER TABLE Categories ADD CONSTRAINT "
-    "fk_categories FOREIGN KEY (id) REFERENCES Products(id);"
+    "CREATE TABLE  Products("
+    "id_products INT UNSIGNED AUTO_INCREMENT,"
+    "generic_name_fr VARCHAR(500),"
+    "code VARCHAR(50),"
+    "url VARCHAR(250),"
+    "nutrition_grade_fr VARCHAR(5),"
+    "stores VARCHAR (250),"
+    "PRIMARY KEY (id_products)"
+    ")ENGINE=INNODB;",
+
+    "CREATE TABLE Categories("
+    "id_categories INT UNSIGNED AUTO_INCREMENT,"
+    "pnns_groups_1 VARCHAR(500),"
+    "code VARCHAR(50),"
+    "id_products_fk INT,"
+    "PRIMARY KEY(id_categories),"
+    # "ALTER TABLE Categories ADD CONSTRAINT "
+    "FOREIGN KEY (id_products_fk) "
+    "REFERENCES Products (id_products)"
+    ")ENGINE=INNODB;",
+
+    "CREATE TABLE Favoris("
+    "id_favoris INT UNSIGNED AUTO_INCREMENT,"
+    "id_products_fk INT,"
+    "PRIMARY KEY (id_favoris),"
+    # "ALTER TABLE Favoris ADD CONSTRAINT"
+    "FOREIGN KEY (id_products_fk) "
+    "REFERENCES Products (id_products)"
+    ")ENGINE=INNODB;"
+
 ]
 
 """Creating data base"""
@@ -124,14 +158,19 @@ class SqlStatement (str, Enum):
     nutrition_grade_fr FROM Products 
             INNER JOIN Categories ON Products.code = Categories.code 
             WHERE Categories.pnns_groups_1 = '%s' ORDER BY RAND() LIMIT 4"""
-    select_substitute_from_product = """SELECT generic_name_fr, 
+    select_substitute_from_product = """SELECT Products.id_products, generic_name_fr, 
     nutrition_grade_fr, stores, url  FROM Products
                         INNER JOIN Categories ON Products.code = Categories.code
                         WHERE Categories.pnns_groups_1 = '%s'
                         AND nutrition_grade_fr in %s 
                         ORDER BY RAND() LIMIT 1"""
 
+    select_favoris_from_product = """SELECT generic_name_fr,
+    nutrition_grade_fr, stores, url  FROM Products
+                        INNER JOIN Favoris ON
+                        Products.id_products = Favoris.id_products_fk"""
+
     save_in_table_favoris = """INSERT INTO Favoris 
-    (generic_name_fr, nutrition_grade_fr,stores, url) 
-    VALUES ('%s', '%s', '%s', '%s'); """
+    (id_products_fk) VALUES ('%s'); """
+
     select_table_favoris = """SELECT * FROM Favoris; """
