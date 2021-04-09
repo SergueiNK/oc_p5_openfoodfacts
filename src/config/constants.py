@@ -23,7 +23,7 @@ from enum import Enum
 
 create_tables_cmd = [
     "CREATE TABLE  Products("
-    "id_products INT UNSIGNED AUTO_INCREMENT,"
+    "id_products INT AUTO_INCREMENT,"
     "generic_name_fr VARCHAR(500),"
     "code VARCHAR(50),"
     "url VARCHAR(250),"
@@ -33,23 +33,21 @@ create_tables_cmd = [
     ")ENGINE=INNODB;",
 
     "CREATE TABLE Categories("
-    "id_categories INT UNSIGNED AUTO_INCREMENT,"
+    "id_categories INT AUTO_INCREMENT,"
     "pnns_groups_1 VARCHAR(500),"
     "code VARCHAR(50),"
     "id_products_fk INT,"
     "PRIMARY KEY(id_categories),"
     # "ALTER TABLE Categories ADD CONSTRAINT "
-    "FOREIGN KEY (id_products_fk) "
-    "REFERENCES Products (id_products)"
+    "FOREIGN KEY (id_products_fk) REFERENCES Products(id_products)"
     ")ENGINE=INNODB;",
 
     "CREATE TABLE Favoris("
-    "id_favoris INT UNSIGNED AUTO_INCREMENT,"
+    "id_favoris INT AUTO_INCREMENT,"
     "id_products_fk INT,"
     "PRIMARY KEY (id_favoris),"
     # "ALTER TABLE Favoris ADD CONSTRAINT"
-    "FOREIGN KEY (id_products_fk) "
-    "REFERENCES Products (id_products)"
+    "FOREIGN KEY (id_products_fk)REFERENCES Products(id_products)"
     ")ENGINE=INNODB;"
 
 ]
@@ -148,7 +146,7 @@ class SqlStatement (str, Enum):
 
     """Sql constants for sort and edit the tables"""
     sql_categories_selection = """SELECT DISTINCT pnns_groups_1 
-    FROM Categories ORDER BY id LIMIT 4"""
+    FROM Categories ORDER BY id_categories LIMIT 4"""
     insert_values_products_table = """INSERT INTO Products(generic_name_fr, 
             code, url, nutrition_grade_fr,stores) 
             VALUES (%s, %s, %s, %s, %s); """

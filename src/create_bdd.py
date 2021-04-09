@@ -19,6 +19,7 @@ def create_database():
             for cmd in create_tables_cmd:
                 # create the tables
                 cursor.execute(cmd)
+                connector.commit()
             insert_in_tables(connector)
             connector.close()
         except Exception as e:
