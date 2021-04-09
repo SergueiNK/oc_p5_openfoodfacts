@@ -43,7 +43,7 @@ def insert_in_tables(connector):
             if verify_product(product):
                 cursor.execute(sql_products, (
                     product.get('generic_name_fr'),
-                    product.get('code'),
+                    int(product.get('code')),
                     product.get('url'),
                     product.get('nutrition_grade_fr'),
                     product.get('stores')))
@@ -51,7 +51,7 @@ def insert_in_tables(connector):
                 # Insert verified data to categories
                 cursor.execute(sql_categories, (
                     product.get('pnns_groups_1'),
-                    product.get('code')
+                    int(product.get('code'))
                 ))
                 connector.commit()
 

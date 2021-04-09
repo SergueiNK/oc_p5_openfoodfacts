@@ -23,31 +23,27 @@ from enum import Enum
 
 create_tables_cmd = [
     "CREATE TABLE  Products("
-    "id_products INT AUTO_INCREMENT,"
+    "code_products BIGINT,"
     "generic_name_fr VARCHAR(500),"
-    "code VARCHAR(50),"
     "url VARCHAR(250),"
     "nutrition_grade_fr VARCHAR(5),"
     "stores VARCHAR (250),"
-    "PRIMARY KEY (id_products)"
+    "PRIMARY KEY (code_products)"
     ")ENGINE=INNODB;",
 
     "CREATE TABLE Categories("
-    "id_categories INT AUTO_INCREMENT,"
+    "code_categories BIGINT,"
     "pnns_groups_1 VARCHAR(500),"
-    "code VARCHAR(50),"
-    "id_products_fk INT,"
-    "PRIMARY KEY(id_categories),"
-    # "ALTER TABLE Categories ADD CONSTRAINT "
-    "FOREIGN KEY (id_products_fk) REFERENCES Products(id_products)"
+    "code_products_fk BIGINT,"
+    "PRIMARY KEY(code_categories),"
+    "FOREIGN KEY (code_products_fk) REFERENCES Products(code_products)"
     ")ENGINE=INNODB;",
 
     "CREATE TABLE Favoris("
     "id_favoris INT AUTO_INCREMENT,"
-    "id_products_fk INT,"
+    "code_products_fk BIGINT,"
     "PRIMARY KEY (id_favoris),"
-    # "ALTER TABLE Favoris ADD CONSTRAINT"
-    "FOREIGN KEY (id_products_fk)REFERENCES Products(id_products)"
+    "FOREIGN KEY (code_products_fk)REFERENCES Products(code_products)"
     ")ENGINE=INNODB;"
 
 ]
@@ -146,19 +142,19 @@ class SqlStatement (str, Enum):
 
     """Sql constants for sort and edit the tables"""
     sql_categories_selection = """SELECT DISTINCT pnns_groups_1 
-    FROM Categories ORDER BY id_categories LIMIT 4"""
+    FROM Categories ORDER BY code_categories LIMIT 4"""
     insert_values_products_table = """INSERT INTO Products(generic_name_fr, 
-            code, url, nutrition_grade_fr,stores) 
+            code_products, url, nutrition_grade_fr,stores) 
             VALUES (%s, %s, %s, %s, %s); """
     insert_values_categories_table = """INSERT INTO 
-    Categories(pnns_groups_1, code) VALUES (%s, %s);"""
+    Categories(pnns_groups_1, code_categories) VALUES (%s, %s);"""
     select_products_from_category = """SELECT DISTINCT generic_name_fr, 
     nutrition_grade_fr FROM Products 
-            INNER JOIN Categories ON Products.code = Categories.code 
+            INNER JOIN Categories ON Products.code_products = Categories.code_categories 
             WHERE Categories.pnns_groups_1 = '%s' ORDER BY RAND() LIMIT 4"""
-    select_substitute_from_product = """SELECT Products.id_products, generic_name_fr, 
+    select_substitute_from_product = """SELECT Products.code_products, generic_name_fr, 
     nutrition_grade_fr, stores, url  FROM Products
-                        INNER JOIN Categories ON Products.code = Categories.code
+                        INNER JOIN Categories ON Products.code_products = Categories.code_categories
                         WHERE Categories.pnns_groups_1 = '%s'
                         AND nutrition_grade_fr in %s 
                         ORDER BY RAND() LIMIT 1"""
@@ -166,9 +162,9 @@ class SqlStatement (str, Enum):
     select_favoris_from_product = """SELECT generic_name_fr,
     nutrition_grade_fr, stores, url  FROM Products
                         INNER JOIN Favoris ON
-                        Products.id_products = Favoris.id_products_fk"""
+                        Products.code_products = Favoris.code_products_fk"""
 
     save_in_table_favoris = """INSERT INTO Favoris 
-    (id_products_fk) VALUES ('%s'); """
+    (code_products_fk) VALUES ('%s'); """
 
     select_table_favoris = """SELECT * FROM Favoris; """

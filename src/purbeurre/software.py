@@ -116,7 +116,7 @@ class Display:
             dict_substitute = (self.bdd.get_query_results(
                 SqlStatement.select_substitute_from_product %
                 (categorie_selectione['pnns_groups_1'], substitute_score),
-                ['id', 'generic_name_fr', 'nutrition_grade_fr', 'stores', 'url']
+                ['code_products', 'generic_name_fr', 'nutrition_grade_fr', 'stores', 'url']
             ))
             if len(dict_substitute) > 0:
                 for index, product in enumerate(dict_substitute):
@@ -131,7 +131,7 @@ class Display:
 
                     self.bdd.save(
                         SqlStatement.save_in_table_favoris % (
-                            dict_substitute[0]['id']
+                            dict_substitute[0]['code_products']
                         )
                     )
                     return self.home_page()
