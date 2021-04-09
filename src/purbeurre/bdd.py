@@ -37,4 +37,3 @@ class Bdd:
         cursor = self.connexion.cursor()
         cursor.execute(sql_statement)
         self.connexion.commit()
-

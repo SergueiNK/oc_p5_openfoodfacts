@@ -27,7 +27,7 @@ def create_database():
             connector.close()
             raise e
     except Exception as e:
-        # print(e)
+
         raise e
 
 

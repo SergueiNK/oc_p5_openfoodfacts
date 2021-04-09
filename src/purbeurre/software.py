@@ -116,11 +116,13 @@ class Display:
             dict_substitute = (self.bdd.get_query_results(
                 SqlStatement.select_substitute_from_product %
                 (categorie_selectione['pnns_groups_1'], substitute_score),
-                ['code_products', 'generic_name_fr', 'nutrition_grade_fr', 'stores', 'url']
+                ['code_products', 'generic_name_fr', 'nutrition_grade_fr',
+                 'stores', 'url']
             ))
             if len(dict_substitute) > 0:
                 for index, product in enumerate(dict_substitute):
-                    print((Fore.YELLOW + '{} nutriscore-({}) magasins:{} url-{}'
+                    print((Fore.YELLOW +
+                           '{} nutriscore-({}) magasins:{} url-{}'
                            .format(product['generic_name_fr'],
                                    product['nutrition_grade_fr'],
                                    product['stores'], product['url'])))

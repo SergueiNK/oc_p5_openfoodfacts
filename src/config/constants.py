@@ -127,7 +127,7 @@ class SqlStatement (str, Enum):
 
     """Sql constants for sort and edit the tables"""
     sql_categories_selection = """SELECT DISTINCT pnns_groups_1 
-    FROM Categories ORDER BY code_categories LIMIT 4"""
+        FROM Categories ORDER BY code_categories LIMIT 4"""
     insert_values_products_table = """INSERT INTO Products(generic_name_fr, 
             code_products, url, nutrition_grade_fr,stores) 
             VALUES (%s, %s, %s, %s, %s); """
@@ -135,11 +135,14 @@ class SqlStatement (str, Enum):
     Categories(pnns_groups_1, code_categories) VALUES (%s, %s);"""
     select_products_from_category = """SELECT DISTINCT generic_name_fr, 
     nutrition_grade_fr FROM Products 
-            INNER JOIN Categories ON Products.code_products = Categories.code_categories 
+            INNER JOIN Categories ON Products.code_products 
+            = Categories.code_categories 
             WHERE Categories.pnns_groups_1 = '%s' ORDER BY RAND() LIMIT 4"""
-    select_substitute_from_product = """SELECT Products.code_products, generic_name_fr, 
+    select_substitute_from_product = """SELECT Products.code_products, 
+    generic_name_fr, 
     nutrition_grade_fr, stores, url  FROM Products
-                        INNER JOIN Categories ON Products.code_products = Categories.code_categories
+                        INNER JOIN Categories ON Products.code_products 
+                        = Categories.code_categories
                         WHERE Categories.pnns_groups_1 = '%s'
                         AND nutrition_grade_fr in %s 
                         ORDER BY RAND() LIMIT 1"""
