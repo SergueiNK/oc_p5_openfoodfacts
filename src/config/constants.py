@@ -5,21 +5,6 @@ from enum import Enum
 
 
 """Sql command. Create tables Products, Categories, Favoris"""
-# create_tables_cmd = [
-#     "CREATE TABLE  Products(id INT UNSIGNED AUTO_INCREMENT, "
-#     "generic_name_fr VARCHAR(500), code VARCHAR(50), url VARCHAR(250), "
-#     "nutrition_grade_fr VARCHAR(5), stores VARCHAR (250), "
-#     "PRIMARY KEY (id) )ENGINE=INNODB;",
-#     "CREATE TABLE  Categories(id INT UNSIGNED AUTO_INCREMENT, "
-#     "pnns_groups_1 VARCHAR(500), code VARCHAR(50), PRIMARY KEY "
-#     "(id))ENGINE=INNODB;",
-#     "CREATE TABLE Favoris(id_favoris INT UNSIGNED AUTO_INCREMENT, "
-#     "PRIMARY KEY (id_favoris))ENGINE=INNODB;",
-#     "ALTER TABLE Categories ADD CONSTRAINT "
-#     "fk_categories FOREIGN KEY (id) REFERENCES Products(id);",
-#     "ALTER TABLE Favoris ADD CONSTRAINT "
-#     "fk_favoris FOREIGN KEY (id) REFERENCES Products(id);"
-# ]
 
 create_tables_cmd = [
     "CREATE TABLE  Products("
