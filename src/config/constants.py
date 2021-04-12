@@ -126,25 +126,25 @@ class SqlStatement (str, Enum):
     use_purbeurre = "USE purbeurre;"
 
     """Sql constants for sort and edit the tables"""
-    sql_categories_selection = """SELECT DISTINCT pnns_groups_1 
-        FROM Categories ORDER BY code_categories LIMIT 4"""
-    insert_values_products_table = """INSERT INTO Products(generic_name_fr, 
-            code_products, url, nutrition_grade_fr,stores) 
+    sql_categories_selection = """SELECT DISTINCT pnns_groups_1
+            FROM Categories ORDER BY code_categories LIMIT 4"""
+    insert_values_products_table = """INSERT INTO Products(generic_name_fr,
+            code_products, url, nutrition_grade_fr,stores)
             VALUES (%s, %s, %s, %s, %s); """
-    insert_values_categories_table = """INSERT INTO 
+    insert_values_categories_table = """INSERT INTO
     Categories(pnns_groups_1, code_categories) VALUES (%s, %s);"""
-    select_products_from_category = """SELECT DISTINCT generic_name_fr, 
-    nutrition_grade_fr FROM Products 
-            INNER JOIN Categories ON Products.code_products 
-            = Categories.code_categories 
+    select_products_from_category = """SELECT DISTINCT generic_name_fr,
+    nutrition_grade_fr FROM Products
+            INNER JOIN Categories ON Products.code_products
+            = Categories.code_categories
             WHERE Categories.pnns_groups_1 = '%s' ORDER BY RAND() LIMIT 4"""
-    select_substitute_from_product = """SELECT Products.code_products, 
-    generic_name_fr, 
+    select_substitute_from_product = """SELECT Products.code_products,
+    generic_name_fr,
     nutrition_grade_fr, stores, url  FROM Products
-                        INNER JOIN Categories ON Products.code_products 
+                        INNER JOIN Categories ON Products.code_products
                         = Categories.code_categories
                         WHERE Categories.pnns_groups_1 = '%s'
-                        AND nutrition_grade_fr in %s 
+                        AND nutrition_grade_fr in %s
                         ORDER BY RAND() LIMIT 1"""
 
     select_favoris_from_product = """SELECT generic_name_fr,
@@ -152,7 +152,7 @@ class SqlStatement (str, Enum):
                         INNER JOIN Favoris ON
                         Products.code_products = Favoris.code_products_fk"""
 
-    save_in_table_favoris = """INSERT INTO Favoris 
+    save_in_table_favoris = """INSERT INTO Favoris
     (code_products_fk) VALUES ('%s'); """
 
     select_table_favoris = """SELECT * FROM Favoris; """

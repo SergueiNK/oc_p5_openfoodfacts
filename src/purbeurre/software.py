@@ -12,13 +12,14 @@ def quit_software():
 
 
 class Display:
-    # Start purbeurre
-    favorites = []
     """
     class Display who defined the display of software
     Methods: __init__, home_page, categories_page,
-            product_page, substitute_page, saved_substitut_page 
+    product_page, substitute_page, saved_substitut_page
     """
+
+    # Start purbeurre
+    favorites = []
 
     def __init__(self, bdd):
         """Initialize the bbd and dispalay of home page"""
