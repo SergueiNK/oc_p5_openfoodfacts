@@ -1,1 +1,0 @@
-https://fr.openfoodfacts.org/cgi/search.pl?page_size=&1page={}&action=process&json=1'
