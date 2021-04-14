@@ -35,11 +35,11 @@ pip install -r ../../requirements.txt
 
 LINUX
 
-source virtual-env/bin/activate
+source env/bin/activate
 
 WINDOWS
 
-virtual_env\Scripts\activate.bat
+env\Scripts\activate.bat
 
 ##** Purbeurre software - Launch**
 
