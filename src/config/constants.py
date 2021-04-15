@@ -35,15 +35,15 @@ create_tables_cmd = [
 
 """Creating data base"""
 infos_db = {
-    'user': 'root',
-    'password': 'Aukey2041!*',
+    'user': '----',
+    'password': '----',
     'host': '127.0.0.1'
 }
 
 """Connexion to database"""
 infos_db_purbeurre = {
-    'user': 'root',
-    'password': 'Aukey2041!*',
+    'user': '----',
+    'password': '----',
     'host': '127.0.0.1',
     'database': 'purbeurre'
 }
